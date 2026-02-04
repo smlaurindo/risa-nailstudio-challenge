@@ -1,5 +1,15 @@
 server:
-  port: 8888
+  port: ${PORT:8888}
+  shutdown: graceful
 spring:
+  threads.virtual.enabled: true
   application:
     name: Risa Nail Studio API
+
+app:
+  cors:
+    allowed:
+      origins: ${CORS_ALLOWED_ORIGINS}
+      methods: ${CORS_ALLOWED_METHODS:GET,POST,PUT,DELETE,OPTIONS,PATCH}
+  env:
+    is-dev: true
