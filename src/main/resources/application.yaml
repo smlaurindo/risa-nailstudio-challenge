@@ -5,7 +5,18 @@ spring:
   threads.virtual.enabled: true
   application:
     name: Risa Nail Studio API
-
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5433/risa_dev_db}
+    username: ${DATABASE_USERNAME:risa_dev_user}
+    password: ${DATABASE_PASSWORD:risa_dev_password}
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+    open-in-view: false
 app:
   cors:
     allowed:
