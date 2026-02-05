@@ -3,11 +3,11 @@ package com.smlaurindo.risanailstudio.service.application.domain;
 public class Service {
     private String id;
     private String name;
-    private String durationMinutes;
-    private Integer priceCents;
+    private int durationMinutes;
+    private int priceCents;
     private String icon;
 
-    public Service(String id, String name, String durationMinutes, Integer priceCents, String icon) {
+    public Service(String id, String name, Integer durationMinutes, Integer priceCents, String icon) {
         this.id = id;
         this.name = name;
         this.durationMinutes = durationMinutes;
@@ -23,11 +23,11 @@ public class Service {
         return name;
     }
 
-    public String getDurationMinutes() {
+    public int getDurationMinutes() {
         return durationMinutes;
     }
 
-    public Integer getPriceCents() {
+    public int getPriceCents() {
         return priceCents;
     }
 

@@ -17,14 +17,14 @@ public class ServiceJpaEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "duration_minutes", nullable = false)
-    private String durationMinutes;
+    private int durationMinutes;
 
     @Column(name = "price_cents", nullable = false)
-    private Integer priceCents;
+    private int priceCents;
 
     @Column(name = "icon", nullable = false)
     private String icon;

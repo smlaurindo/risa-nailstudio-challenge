@@ -7,7 +7,7 @@ import java.util.List;
 public record GetServicesResponse(
         String id,
         String name,
-        String durationMinutes,
+        Integer durationMinutes,
         Integer priceCents,
         String icon
 ) {
