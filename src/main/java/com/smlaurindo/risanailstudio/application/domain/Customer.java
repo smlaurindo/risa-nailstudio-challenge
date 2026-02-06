@@ -2,6 +2,9 @@ package com.smlaurindo.risanailstudio.application.domain;
 
 public class Customer {
     private String id;
+
+
+
     private String name;
     private String email;
     private String password;
@@ -39,6 +42,10 @@ public class Customer {
 
     public String getPhoto() {
         return photo;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
 
