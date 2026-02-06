@@ -18,9 +18,16 @@ spring:
         format_sql: true
     open-in-view: false
 app:
-  cors:
-    allowed:
-      origins: ${CORS_ALLOWED_ORIGINS}
+  cors.allowed:
+      origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000}
       methods: ${CORS_ALLOWED_METHODS:GET,POST,PUT,DELETE,OPTIONS,PATCH}
   env:
     is-dev: true
+    is-production: false
+  jwt:
+    public-key: ${JWT_PUBLIC_KEY}
+    private-key: ${JWT_PRIVATE_KEY}
+    access-token-expiration: ${JWT_ACCESS_TOKEN_EXPIRATION:900000} # 15 minutos
+    refresh-token-expiration: ${JWT_REFRESH_TOKEN_EXPIRATION:604800000} # 7 dias
+  security:
+    password-salt: ${SECURITY_PASSWORD_SALT:16}

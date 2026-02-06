@@ -3,6 +3,7 @@ package com.smlaurindo.risanailstudio.shared.exception;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum ErrorCode {
+    USER_ALREADY_EXISTS,
     INTERNAL_ERROR;
 
     @JsonValue

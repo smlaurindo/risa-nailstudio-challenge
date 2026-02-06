@@ -11,7 +11,7 @@ public record GetServicesResponse(
         Integer priceCents,
         String icon
 ) {
-    public static List<GetServicesResponse> from(List<GetAvailableServices.GetAvailableServicesUseCaseOutput> output) {
+    public static List<GetServicesResponse> from(List<GetAvailableServices.GetAvailableServicesOutput> output) {
         return output
                 .stream()
                 .map((service) -> new GetServicesResponse(

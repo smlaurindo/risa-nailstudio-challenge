@@ -1,7 +1,9 @@
-package com.smlaurindo.risanailstudio.adapter.outbound.persitence;
+package com.smlaurindo.risanailstudio.adapter.outbound.persitence.adapter;
 
+import com.smlaurindo.risanailstudio.adapter.outbound.persitence.entity.ServiceJpaEntity;
+import com.smlaurindo.risanailstudio.adapter.outbound.persitence.repository.ServiceJpaRepository;
 import com.smlaurindo.risanailstudio.application.domain.Service;
-import com.smlaurindo.risanailstudio.port.persistence.ServiceRepository;
+import com.smlaurindo.risanailstudio.port.outbound.persistence.ServiceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

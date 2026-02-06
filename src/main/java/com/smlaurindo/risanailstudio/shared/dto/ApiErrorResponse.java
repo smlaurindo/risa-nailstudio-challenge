@@ -32,18 +32,12 @@ public record ApiErrorResponse(
             Map<String, Object> meta,
             String message,
             String requestId
-    ) {
-        /**
-         * Erro de validação de campo individual.
-         *
-         * @param code  Código do erro de validação (REQUIRED, INVALID_EMAIL, etc)
-         * @param field Caminho do campo com dot notation (email, address.street, items.0.name)
-         */
-        public record FieldError(
-                ErrorCode.Validation code,
-                String field
-        ) {}
-    }
+    ) {}
+
+    public record FieldError(
+            ErrorCode.Validation code,
+            String field
+    ) {}
 
     public static ApiErrorResponse internal(String message, String requestId) {
         return new ApiErrorResponse(

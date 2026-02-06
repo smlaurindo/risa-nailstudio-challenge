@@ -3,7 +3,7 @@ package com.smlaurindo.risanailstudio.application.usecase;
 import java.util.List;
 
 public interface GetAvailableServices {
-    record GetAvailableServicesUseCaseOutput(
+    record GetAvailableServicesOutput(
             String id,
             String name,
             int durationMinutes,
@@ -11,5 +11,5 @@ public interface GetAvailableServices {
             String icon
     ) {}
 
-    List<GetAvailableServicesUseCaseOutput> getAvailableServices();
+    List<GetAvailableServicesOutput> getAvailableServices();
 }
