@@ -1,6 +1,6 @@
-package com.smlaurindo.risanailstudio.service.adapter.inbound.web.dto.response;
+package com.smlaurindo.risanailstudio.adapter.inbound.web.dto.response;
 
-import com.smlaurindo.risanailstudio.service.application.usecase.GetAvailableServicesUseCaseOutput;
+import com.smlaurindo.risanailstudio.application.usecase.GetAvailableServices;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ public record GetServicesResponse(
         Integer priceCents,
         String icon
 ) {
-    public static List<GetServicesResponse> from(List<GetAvailableServicesUseCaseOutput> output) {
+    public static List<GetServicesResponse> from(List<GetAvailableServices.GetAvailableServicesUseCaseOutput> output) {
         return output
                 .stream()
                 .map((service) -> new GetServicesResponse(

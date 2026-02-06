@@ -1,4 +1,4 @@
-package com.smlaurindo.risanailstudio.service.adapter.outbound.persistence;
+package com.smlaurindo.risanailstudio.adapter.outbound.persitence;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

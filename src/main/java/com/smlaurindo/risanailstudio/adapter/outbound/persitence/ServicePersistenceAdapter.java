@@ -1,7 +1,7 @@
-package com.smlaurindo.risanailstudio.service.adapter.outbound.persistence;
+package com.smlaurindo.risanailstudio.adapter.outbound.persitence;
 
-import com.smlaurindo.risanailstudio.service.application.domain.Service;
-import com.smlaurindo.risanailstudio.service.port.outbound.persistence.ServiceRepository;
+import com.smlaurindo.risanailstudio.application.domain.Service;
+import com.smlaurindo.risanailstudio.port.persistence.ServiceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

@@ -1,10 +1,10 @@
-package com.smlaurindo.risanailstudio.service.application.usecase;
+package com.smlaurindo.risanailstudio.application.usecase;
 
-import com.smlaurindo.risanailstudio.service.port.outbound.persistence.ServiceRepository;
+import com.smlaurindo.risanailstudio.port.persistence.ServiceRepository;
 
 import java.util.List;
 
-public class GetAvailableServicesUseCase {
+public class GetAvailableServicesUseCase implements GetAvailableServices {
 
     private final ServiceRepository serviceRepository;
 

@@ -1,4 +1,4 @@
-package com.smlaurindo.risanailstudio.service.application.domain;
+package com.smlaurindo.risanailstudio.application.domain;
 
 public class Service {
     private String id;

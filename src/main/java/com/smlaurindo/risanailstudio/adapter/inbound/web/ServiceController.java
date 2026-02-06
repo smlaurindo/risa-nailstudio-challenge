@@ -1,8 +1,7 @@
-package com.smlaurindo.risanailstudio.service.adapter.inbound.web;
+package com.smlaurindo.risanailstudio.adapter.inbound.web;
 
-import com.smlaurindo.risanailstudio.service.adapter.inbound.service.ServiceService;
-import com.smlaurindo.risanailstudio.service.adapter.inbound.web.dto.response.GetServicesResponse;
-import com.smlaurindo.risanailstudio.service.application.usecase.GetAvailableServicesUseCase;
+import com.smlaurindo.risanailstudio.application.usecase.GetAvailableServices;
+import com.smlaurindo.risanailstudio.adapter.inbound.web.dto.response.GetServicesResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -16,11 +15,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ServiceController {
 
-    private final ServiceService serviceService;
+    private final GetAvailableServices getAvailableServices;
 
     @GetMapping(value = "/services", version = "1")
     public ResponseEntity<List<GetServicesResponse>> getAvailableServices() {
-        final var output = serviceService.getAvailableServices();
+        final var output = getAvailableServices.getAvailableServices();
         return ResponseEntity.ok(GetServicesResponse.from(output));
     }
 }

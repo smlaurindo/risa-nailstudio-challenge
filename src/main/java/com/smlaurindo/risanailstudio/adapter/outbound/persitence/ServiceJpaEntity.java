@@ -1,6 +1,6 @@
-package com.smlaurindo.risanailstudio.service.adapter.outbound.persistence;
+package com.smlaurindo.risanailstudio.adapter.outbound.persitence;
 
-import com.smlaurindo.risanailstudio.service.application.domain.Service;
+import com.smlaurindo.risanailstudio.application.domain.Service;
 import jakarta.persistence.*;
 import lombok.*;
 
