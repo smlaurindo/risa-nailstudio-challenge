@@ -56,8 +56,9 @@ public class Appointment {
     }
 
     public void confirm() {
-        if (status != AppointmentStatus.PENDING) {
-            throw new BusinessRuleException(ErrorCode.APPOINTMENT_ALREADY_CONFIRMED);
+        switch (status) {
+            case CONFIRMED -> throw new BusinessRuleException(ErrorCode.APPOINTMENT_ALREADY_CONFIRMED);
+            case CANCELLED -> throw new BusinessRuleException(ErrorCode.APPOINTMENT_ALREADY_CANCELLED);
         }
 
         if (slot.isInThePast()) {
