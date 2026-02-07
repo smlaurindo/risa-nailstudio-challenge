@@ -4,12 +4,16 @@ import com.smlaurindo.risanailstudio.adapter.outbound.persitence.entity.Appointm
 import com.smlaurindo.risanailstudio.adapter.outbound.persitence.repository.AppointmentJpaRepository;
 import com.smlaurindo.risanailstudio.application.domain.Appointment;
 import com.smlaurindo.risanailstudio.application.domain.AppointmentSlot;
+import com.smlaurindo.risanailstudio.application.domain.AppointmentStatus;
 import com.smlaurindo.risanailstudio.port.outbound.persistence.AppointmentRepository;
 
+import com.smlaurindo.risanailstudio.port.outbound.persistence.projection.AppointmentToListProjection;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -46,5 +50,37 @@ public class AppointmentPersistenceAdapter implements AppointmentRepository {
 
         return appointmentJpaRepository.findById(id)
                 .map(AppointmentJpaEntity::toDomain);
+    }
+
+    @Override
+    public List<AppointmentToListProjection> findAppointments(
+            final Instant startDate,
+            final Instant endDate,
+            final AppointmentStatus status,
+            final String searchQuery
+    ) {
+        log.debug("Finding appointments from {} to {} with status {} and search query '{}'",
+                startDate, endDate, status, searchQuery);
+
+        final var entities = appointmentJpaRepository.findAppointments(
+                startDate,
+                endDate,
+                status,
+                searchQuery
+        );
+
+        return entities.stream()
+                .map(entity -> new AppointmentToListProjection(
+                        entity.getId(),
+                        entity.getCustomerId(),
+                        entity.getCustomerName(),
+                        entity.getCustomerPhoto(),
+                        entity.getServiceId(),
+                        entity.getServiceName(),
+                        entity.getStatus(),
+                        entity.getStartsAt(),
+                        entity.getEndsAt()
+                ))
+                .toList();
     }
 }

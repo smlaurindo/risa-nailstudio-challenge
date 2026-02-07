@@ -14,8 +14,10 @@ import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -46,6 +48,62 @@ public class GlobalExceptionHandler {
                 .toList();
 
         log.warn("Bean validation failed: errors={}, requestId={}", fieldErrors.size(), requestId);
+
+        ApiErrorResponse response = new ApiErrorResponse(
+                new ApiErrorResponse.ErrorBody(
+                        ErrorType.VALIDATION_ERROR,
+                        null,
+                        null,
+                        fieldErrors,
+                        null,
+                        isDev ? ex.getMessage() : null,
+                        requestId
+                ),
+                400
+        );
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public ResponseEntity<ApiErrorResponse> handleMissingServletRequestParameter(
+            MissingServletRequestParameterException ex
+    ) {
+        String requestId = getRequestId();
+
+        log.warn("Missing request parameter: name={}, requestId={}", ex.getParameterName(), requestId);
+
+        List<ApiErrorResponse.FieldError> fieldErrors = List.of(
+                new ApiErrorResponse.FieldError(ErrorCode.Validation.REQUIRED, ex.getParameterName())
+        );
+
+        ApiErrorResponse response = new ApiErrorResponse(
+                new ApiErrorResponse.ErrorBody(
+                        ErrorType.VALIDATION_ERROR,
+                        null,
+                        null,
+                        fieldErrors,
+                        null,
+                        isDev ? ex.getMessage() : null,
+                        requestId
+                ),
+                400
+        );
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ApiErrorResponse> handleMethodArgumentTypeMismatch(
+            MethodArgumentTypeMismatchException ex
+    ) {
+        String requestId = getRequestId();
+
+        log.warn("Type mismatch: parameter={}, requestId={}", ex.getName(), requestId);
+
+        List<ApiErrorResponse.FieldError> fieldErrors = List.of(
+                new ApiErrorResponse.FieldError(ErrorCode.Validation.INVALID_FORMAT, ex.getName())
+        );
 
         ApiErrorResponse response = new ApiErrorResponse(
                 new ApiErrorResponse.ErrorBody(
