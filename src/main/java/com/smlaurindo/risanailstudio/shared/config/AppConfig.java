@@ -101,4 +101,12 @@ public class AppConfig {
     ) {
         return new ListAppointmentsUseCase(adminRepository, appointmentRepository);
     }
+
+    @Bean
+    public GetAppointment getAppointmentUseCase(
+            AdminRepository adminRepository,
+            AppointmentRepository appointmentRepository
+    ) {
+        return new GetAppointmentUseCase(adminRepository, appointmentRepository);
+    }
 }

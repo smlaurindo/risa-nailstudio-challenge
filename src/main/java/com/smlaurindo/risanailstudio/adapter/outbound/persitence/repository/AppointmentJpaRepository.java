@@ -1,6 +1,7 @@
 package com.smlaurindo.risanailstudio.adapter.outbound.persitence.repository;
 
 import com.smlaurindo.risanailstudio.adapter.outbound.persitence.entity.AppointmentJpaEntity;
+import com.smlaurindo.risanailstudio.adapter.outbound.persitence.repository.projection.AppointmentDetailProjection;
 import com.smlaurindo.risanailstudio.adapter.outbound.persitence.repository.projection.AppointmentToListProjection;
 import com.smlaurindo.risanailstudio.application.domain.AppointmentStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface AppointmentJpaRepository extends JpaRepository<AppointmentJpaEntity, String> {
@@ -55,4 +57,28 @@ public interface AppointmentJpaRepository extends JpaRepository<AppointmentJpaEn
             @Param("status") AppointmentStatus status,
             @Param("searchQuery") String searchQuery
     );
+
+    @Query("""
+        SELECT
+            a.id as id,
+            a.startsAt as startsAt,
+            a.endsAt as endsAt,
+            a.status as status,
+            a.createdAt as createdAt,
+            a.confirmedAt as confirmedAt,
+            a.cancelledAt as cancelledAt,
+            c.id as customerId,
+            c.name as customerName,
+            c.photo as customerPhoto,
+            s.id as serviceId,
+            s.name as serviceName,
+            s.priceCents as servicePriceCents,
+            s.icon as serviceIcon,
+            s.durationMinutes as serviceDurationMinutes
+        FROM AppointmentJpaEntity a
+        JOIN a.customer c
+        JOIN a.service s
+        WHERE a.id = :id
+    """)
+    Optional<AppointmentDetailProjection> findDetailById(@Param("id") String id);
 }

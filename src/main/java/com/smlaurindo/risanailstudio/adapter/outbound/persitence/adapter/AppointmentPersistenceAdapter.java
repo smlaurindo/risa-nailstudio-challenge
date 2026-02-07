@@ -7,11 +7,13 @@ import com.smlaurindo.risanailstudio.application.domain.AppointmentSlot;
 import com.smlaurindo.risanailstudio.application.domain.AppointmentStatus;
 import com.smlaurindo.risanailstudio.port.outbound.persistence.AppointmentRepository;
 
+import com.smlaurindo.risanailstudio.port.outbound.persistence.projection.AppointmentDetailProjection;
 import com.smlaurindo.risanailstudio.port.outbound.persistence.projection.AppointmentToListProjection;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
@@ -50,6 +52,31 @@ public class AppointmentPersistenceAdapter implements AppointmentRepository {
 
         return appointmentJpaRepository.findById(id)
                 .map(AppointmentJpaEntity::toDomain);
+    }
+
+    @Override
+    public Optional<AppointmentDetailProjection> findDetailById(final String id) {
+        log.debug("Finding appointment detail by id: {}", id);
+
+        return appointmentJpaRepository.findDetailById(id)
+                .map(entity -> new AppointmentDetailProjection(
+                        entity.getId(),
+                        entity.getStartsAt(),
+                        entity.getEndsAt(),
+                        (int) Duration.between(entity.getStartsAt(), entity.getEndsAt()).toMinutes(),
+                        entity.getStatus(),
+                        entity.getCreatedAt(),
+                        entity.getConfirmedAt(),
+                        entity.getCancelledAt(),
+                        entity.getCustomerId(),
+                        entity.getCustomerName(),
+                        entity.getCustomerPhoto(),
+                        entity.getServiceId(),
+                        entity.getServiceName(),
+                        entity.getServicePriceCents(),
+                        entity.getServiceIcon(),
+                        entity.getServiceDurationMinutes()
+                ));
     }
 
     @Override

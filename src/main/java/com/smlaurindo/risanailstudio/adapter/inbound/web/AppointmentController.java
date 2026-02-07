@@ -4,11 +4,13 @@ import com.smlaurindo.risanailstudio.adapter.inbound.web.dto.request.Appointment
 import com.smlaurindo.risanailstudio.adapter.inbound.web.dto.request.ScheduleAppointmentRequest;
 import com.smlaurindo.risanailstudio.adapter.inbound.web.dto.response.CancelAppointmentResponse;
 import com.smlaurindo.risanailstudio.adapter.inbound.web.dto.response.ConfirmAppointmentResponse;
+import com.smlaurindo.risanailstudio.adapter.inbound.web.dto.response.GetAppointmentResponse;
 import com.smlaurindo.risanailstudio.adapter.inbound.web.dto.response.ListAppointmentsResponse;
 import com.smlaurindo.risanailstudio.adapter.inbound.web.dto.response.ScheduleAppointmentResponse;
 import com.smlaurindo.risanailstudio.application.domain.AppointmentStatus;
 import com.smlaurindo.risanailstudio.application.usecase.CancelAppointment;
 import com.smlaurindo.risanailstudio.application.usecase.ConfirmAppointment;
+import com.smlaurindo.risanailstudio.application.usecase.GetAppointment;
 import com.smlaurindo.risanailstudio.application.usecase.ListAppointments;
 import com.smlaurindo.risanailstudio.application.usecase.ScheduleAppointment;
 import jakarta.validation.Valid;
@@ -40,6 +42,7 @@ public class AppointmentController {
     private final ScheduleAppointment scheduleAppointment;
     private final ConfirmAppointment confirmAppointment;
     private final CancelAppointment cancelAppointment;
+    private final GetAppointment getAppointment;
     private final ListAppointments listAppointments;
 
     @PostMapping(value = "/appointments", version = "1")
@@ -65,8 +68,6 @@ public class AppointmentController {
                 .created(location)
                 .body(ScheduleAppointmentResponse.fromOutput(output));
     }
-
-
 
     @GetMapping(value = "/appointments", version = "1")
     @PreAuthorize("hasRole('ADMIN')")
@@ -104,6 +105,27 @@ public class AppointmentController {
         return ResponseEntity
                 .ok()
                 .body(ListAppointmentsResponse.from(output));
+    }
+
+    @GetMapping(value = "/appointments/{appointmentId}", version = "1")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<GetAppointmentResponse> getAppointment(
+            @AuthenticationPrincipal Jwt jwt,
+            @PathVariable String appointmentId
+    ) {
+        final String userId = jwt.getSubject();
+
+        log.info("Admin with credentials id {} getting appointment {}", userId, appointmentId);
+
+        final var output = getAppointment.getAppointment(
+                new GetAppointment.GetAppointmentInput(appointmentId, userId)
+        );
+
+        log.info("Admin with credentials id {} retrieved appointment {} successfully", userId, appointmentId);
+
+        return ResponseEntity
+                .ok()
+                .body(GetAppointmentResponse.fromOutput(output));
     }
 
     @PatchMapping(value = "/appointments/{appointmentId}/confirm", version = "1")
