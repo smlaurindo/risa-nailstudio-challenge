@@ -3,6 +3,7 @@ package com.smlaurindo.risanailstudio.shared.exception;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum ErrorType {
+    AUTHENTICATION_ERROR("authentication_error"),
     VALIDATION_ERROR("validation_error"),
     CONFLICT("conflict"),
     NOT_FOUND("not_found"),

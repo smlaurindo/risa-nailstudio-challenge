@@ -123,15 +123,6 @@ public class SecurityConfig {
         converter.setJwtGrantedAuthoritiesConverter(jwt -> {
             Collection<GrantedAuthority> authorities = new ArrayList<>();
 
-            Object scopes = jwt.getClaims().get("scopes");
-
-            if (scopes instanceof Collection<?> s) {
-                authorities.addAll(s.stream()
-                        .map(Object::toString)
-                        .map(SimpleGrantedAuthority::new)
-                        .toList());
-            }
-
             Object roles = jwt.getClaims().get("roles");
 
             if (roles instanceof Collection<?> r) {

@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -34,6 +36,19 @@ public class UserPersistenceAdapter implements CredentialsRepository {
                 saved.getPasswordHash(),
                 saved.getRole()
         );
+    }
+
+    @Override
+    public Optional<Credentials> findByEmail(String email) {
+        log.debug("Finding user by email: {}", email);
+
+        return userJpaRepository.findByEmail(email)
+                .map(user -> new Credentials(
+                        user.getId(),
+                        user.getEmail(),
+                        user.getPasswordHash(),
+                        user.getRole()
+                ));
     }
 
     @Override

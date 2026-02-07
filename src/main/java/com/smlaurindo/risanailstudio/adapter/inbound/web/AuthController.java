@@ -1,15 +1,26 @@
 package com.smlaurindo.risanailstudio.adapter.inbound.web;
 
+import com.smlaurindo.risanailstudio.adapter.inbound.web.dto.request.SignInRequest;
 import com.smlaurindo.risanailstudio.adapter.inbound.web.dto.request.SignUpRequest;
+import com.smlaurindo.risanailstudio.adapter.inbound.web.dto.response.SignInResponse;
+import com.smlaurindo.risanailstudio.application.usecase.SignIn;
 import com.smlaurindo.risanailstudio.application.usecase.SignUp;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.time.Duration;
+
+import static com.smlaurindo.risanailstudio.shared.constant.AuthConstants.ACCESS_TOKEN_COOKIE_NAME;
+import static com.smlaurindo.risanailstudio.shared.constant.AuthConstants.REFRESH_TOKEN_COOKIE_NAME;
 
 @Slf4j
 @RestController
@@ -17,6 +28,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final SignUp signUp;
+    private final SignIn signIn;
+
+    @Value("${app.env.is-dev}")
+    private boolean isDev;
+
+    @Value("${app.cookie.domain}")
+    private String cookieDomain;
 
     @PostMapping(value = "/auth/sign-up", version = "1")
     public ResponseEntity<Void> signUp(@Valid @RequestBody SignUpRequest request) {
@@ -29,5 +47,45 @@ public class AuthController {
         log.info("Sign up successful for email: {}", request.email());
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PostMapping(value = "/auth/sign-in", version = "1")
+    public ResponseEntity<SignInResponse> signIn(
+            @Valid @RequestBody SignInRequest request
+    ) {
+        log.info("Login attempt for email: {}", request.email());
+
+        var output = signIn.signIn(request.toInput());
+
+        var accessTokenCookieBuilder = ResponseCookie.from(ACCESS_TOKEN_COOKIE_NAME, output.accessToken().token())
+                .httpOnly(true)
+                .secure(!isDev)
+                .sameSite("Lax")
+                .path("/")
+                .maxAge(Duration.between(output.accessToken().issuedAt(), output.accessToken().expiresAt()));
+
+        var refreshTokenCookieBuilder = ResponseCookie.from(REFRESH_TOKEN_COOKIE_NAME, output.refreshToken().token())
+                .httpOnly(true)
+                .secure(!isDev)
+                .sameSite("Lax")
+                .path("/")
+                .maxAge(Duration.between(output.refreshToken().issuedAt(), output.refreshToken().expiresAt()));
+
+        if (!isDev && !cookieDomain.isEmpty()) {
+            accessTokenCookieBuilder.domain(cookieDomain);
+        }
+
+        ResponseCookie accessTokenCookie = accessTokenCookieBuilder.build();
+        ResponseCookie refreshTokenCookie = refreshTokenCookieBuilder.build();
+
+        log.info("Login successful for email: {}", request.email());
+
+        var response = SignInResponse.from(output);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .header(HttpHeaders.SET_COOKIE, accessTokenCookie.toString())
+                .header(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString())
+                .body(response);
     }
 }

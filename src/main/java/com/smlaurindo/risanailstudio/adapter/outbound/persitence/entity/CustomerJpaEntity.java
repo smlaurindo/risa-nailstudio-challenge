@@ -15,7 +15,7 @@ public class CustomerJpaEntity {
     @Column(name = "id", nullable = false, unique = true)
     private String id;
 
-    @OneToOne(optional = false)
+    @OneToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", unique = true)
     private UserJpaEntity user;
 

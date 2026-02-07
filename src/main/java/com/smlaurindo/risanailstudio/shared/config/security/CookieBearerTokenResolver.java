@@ -6,10 +6,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.oauth2.server.resource.web.BearerTokenResolver;
 import org.springframework.stereotype.Component;
 
+import static com.smlaurindo.risanailstudio.shared.constant.AuthConstants.ACCESS_TOKEN_COOKIE_NAME;
+
 @Component
 public class CookieBearerTokenResolver implements BearerTokenResolver {
-
-    private static final String ACCESS_TOKEN_COOKIE_NAME = "risa_nailstudio_access_token";
 
     @Override
     public String resolve(HttpServletRequest request) {

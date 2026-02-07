@@ -7,6 +7,7 @@ import com.smlaurindo.risanailstudio.port.outbound.persistence.CredentialsReposi
 import com.smlaurindo.risanailstudio.port.outbound.persistence.CustomerRepository;
 import com.smlaurindo.risanailstudio.port.outbound.persistence.ServiceRepository;
 import com.smlaurindo.risanailstudio.port.outbound.security.PasswordHasher;
+import com.smlaurindo.risanailstudio.port.outbound.security.TokenGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -27,6 +28,15 @@ public class AppConfig {
             PasswordHasher passwordHasher
     ) {
         return new SignUpUseCase(credentialsRepository, customerRepository, passwordHasher);
+    }
+
+    @Bean
+    public SignIn signInUseCase(
+            TokenGenerator tokenGenerator,
+            CredentialsRepository credentialsRepository,
+            PasswordHasher passwordHasher
+    ) {
+        return new SignInUseCase(tokenGenerator, credentialsRepository, passwordHasher);
     }
 
     @Bean

@@ -34,5 +34,6 @@ app:
     refresh-token-expiration: ${JWT_REFRESH_TOKEN_EXPIRATION:604800000} # 7 dias
   security:
     password-salt: ${SECURITY_PASSWORD_SALT:16}
+  cookie.domain: ""
 
 logging.level.com.smlaurindo.risanailstudio: DEBUG
