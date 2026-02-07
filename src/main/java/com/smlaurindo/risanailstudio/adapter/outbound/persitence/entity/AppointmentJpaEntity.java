@@ -24,7 +24,7 @@ public class AppointmentJpaEntity {
     private String id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private UserJpaEntity customer;
+    private CustomerJpaEntity customer;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private ServiceJpaEntity service;
@@ -51,7 +51,7 @@ public class AppointmentJpaEntity {
     public static AppointmentJpaEntity fromDomain(Appointment appointment) {
         return new AppointmentJpaEntity(
                 appointment.getId(),
-                new UserJpaEntity(appointment.getCustomerId()),
+                new CustomerJpaEntity(appointment.getCustomerId()),
                 new ServiceJpaEntity(appointment.getServiceId()),
                 appointment.getSlot().startsAt(),
                 appointment.getSlot().endsAt(),

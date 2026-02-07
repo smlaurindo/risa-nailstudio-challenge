@@ -3,6 +3,7 @@ package com.smlaurindo.risanailstudio.shared.config;
 import com.smlaurindo.risanailstudio.application.usecase.*;
 
 import com.smlaurindo.risanailstudio.port.outbound.persistence.AppointmentRepository;
+import com.smlaurindo.risanailstudio.port.outbound.persistence.CredentialsRepository;
 import com.smlaurindo.risanailstudio.port.outbound.persistence.CustomerRepository;
 import com.smlaurindo.risanailstudio.port.outbound.persistence.ServiceRepository;
 import com.smlaurindo.risanailstudio.port.outbound.security.PasswordHasher;
@@ -21,10 +22,11 @@ public class AppConfig {
 
     @Bean
     public SignUp signUpUseCase(
+            CredentialsRepository credentialsRepository,
             CustomerRepository customerRepository,
             PasswordHasher passwordHasher
     ) {
-        return new SignUpUseCase(customerRepository, passwordHasher);
+        return new SignUpUseCase(credentialsRepository, customerRepository, passwordHasher);
     }
 
     @Bean

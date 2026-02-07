@@ -1,43 +1,35 @@
 package com.smlaurindo.risanailstudio.application.domain;
 
+import java.util.UUID;
+
 public class Customer {
     private String id;
-
-
-
+    private String credentialsId;
     private String name;
-    private String email;
-    private String password;
     private String photo;
 
-    public Customer(String email, String password) {
-        this.email = email;
-        this.password = password;
+    public Customer(String credentialsId) {
+        this.id = UUID.randomUUID().toString();
+        this.credentialsId = credentialsId;
     }
 
-    public Customer(String id, String name, String email, String password, String photo) {
+    public Customer(String id, String credentialsId, String name, String photo) {
         this.id = id;
+        this.credentialsId = credentialsId;
         this.name = name;
-        this.email = email;
-        this.password = password;
         this.photo = photo;
     }
-
 
     public String getId() {
         return id;
     }
 
+    public String getCredentialsId() {
+        return credentialsId;
+    }
+
     public String getName() {
         return name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     public String getPhoto() {

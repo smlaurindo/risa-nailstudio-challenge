@@ -1,6 +1,8 @@
 package com.smlaurindo.risanailstudio.adapter.outbound.persitence.adapter;
 
+import com.smlaurindo.risanailstudio.adapter.outbound.persitence.entity.CustomerJpaEntity;
 import com.smlaurindo.risanailstudio.adapter.outbound.persitence.entity.UserJpaEntity;
+import com.smlaurindo.risanailstudio.adapter.outbound.persitence.repository.CustomerJpaRepository;
 import com.smlaurindo.risanailstudio.adapter.outbound.persitence.repository.UserJpaRepository;
 import com.smlaurindo.risanailstudio.application.domain.Customer;
 import com.smlaurindo.risanailstudio.port.outbound.persistence.CustomerRepository;
@@ -15,39 +17,40 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CustomerPersistenceAdapter implements CustomerRepository {
 
-    private final UserJpaRepository userJpaRepository;
+    private final CustomerJpaRepository customerJpaRepository;
 
     @Override
     public Customer save(Customer customer) {
-        log.debug("Saving customer: {}", customer.getEmail());
+        log.debug("Saving customer: {}", customer.getId());
 
-        final var entity = UserJpaEntity.fromDomain(customer);
+        CustomerJpaEntity entity = CustomerJpaEntity.builder()
+                .id(customer.getId())
+                .user(new UserJpaEntity(customer.getCredentialsId()))
+                .name(customer.getName())
+                .photo(customer.getPhoto())
+                .build();
 
-        final var savedEntity = userJpaRepository.save(entity);
+        CustomerJpaEntity saved = customerJpaRepository.save(entity);
 
-        return savedEntity.toCustomerDomain();
-    }
-
-    @Override
-    public Optional<Customer> findByEmail(String email) {
-        log.debug("Finding customer by email: {}", email);
-
-        return userJpaRepository.findByEmail(email)
-            .map(UserJpaEntity::toCustomerDomain);
+        return new Customer(
+                saved.getId(),
+                saved.getUser().getId(),
+                saved.getName(),
+                saved.getPhoto()
+        );
     }
 
     @Override
     public Optional<Customer> findById(String id) {
         log.debug("Finding customer by id: {}", id);
 
-        return userJpaRepository.findById(id)
-            .map(UserJpaEntity::toCustomerDomain);
-    }
-
-    @Override
-    public boolean existsByEmail(String email) {
-        log.debug("Checking if email exists: {}", email);
-
-        return userJpaRepository.existsByEmail(email);
+        return customerJpaRepository.findById(id)
+                .map(entity -> new Customer(
+                        entity.getId(),
+                        entity.getUser().getId(),
+                        entity.getName(),
+                        entity.getPhoto()
+                ));
     }
 }
+

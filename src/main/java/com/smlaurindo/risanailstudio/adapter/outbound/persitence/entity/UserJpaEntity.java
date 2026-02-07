@@ -1,6 +1,6 @@
 package com.smlaurindo.risanailstudio.adapter.outbound.persitence.entity;
 
-import com.smlaurindo.risanailstudio.application.domain.Customer;
+import com.smlaurindo.risanailstudio.application.domain.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,46 +13,20 @@ import lombok.*;
 @Builder
 public class UserJpaEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id", nullable = false, unique = true)
     private String id;
-
-    @Column(name = "name")
-    private String name;
 
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "password", nullable = false)
-    private String password;
+    @Column(name = "password_hash", nullable = false)
+    private String passwordHash;
 
-    @Column(name = "photo")
-    private String photo;
-
-    @Column(name = "is_admin", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
-    private boolean isAdmin;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false)
+    private Role role;
 
     public UserJpaEntity(String id) {
         this.id = id;
-    }
-
-    public static UserJpaEntity fromDomain(Customer customer) {
-        return new UserJpaEntity(
-                customer.getId(),
-                customer.getName(),
-                customer.getEmail(),
-                customer.getPassword(),
-                customer.getPhoto(),
-                false
-        );
-    }
-
-    public Customer toCustomerDomain() {
-        return new Customer(
-                this.getId(),
-                this.getName(),
-                this.getEmail(),
-                this.getPassword(),
-                this.getPhoto()
-        );
     }
 }
