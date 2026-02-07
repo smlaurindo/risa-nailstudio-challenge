@@ -88,6 +88,10 @@ public class SecurityConfig {
                         authorize
                                 .requestMatchers("/v1/auth/sign-up").permitAll()
                                 .requestMatchers("/v1/auth/sign-in").permitAll()
+                                .requestMatchers("/swagger-ui.html").permitAll()
+                                .requestMatchers("/swagger-ui/**").permitAll()
+                                .requestMatchers("/v3/api-docs/**").permitAll()
+                                .requestMatchers("/scalar/**").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .csrf(AbstractHttpConfigurer::disable)

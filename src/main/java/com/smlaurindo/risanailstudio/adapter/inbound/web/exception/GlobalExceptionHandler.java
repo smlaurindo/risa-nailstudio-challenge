@@ -12,7 +12,9 @@ import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authorization.AuthorizationDeniedException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -194,6 +196,48 @@ public class GlobalExceptionHandler {
         );
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ApiErrorResponse> handleHttpMessageNotReadable(HttpMessageNotReadableException ex) {
+        String requestId = getRequestId();
+
+        log.warn("Malformed request body: requestId={}", requestId);
+
+        List<ApiErrorResponse.FieldError> fieldErrors = List.of(
+                new ApiErrorResponse.FieldError(ErrorCode.Validation.INVALID_FORMAT, "body")
+        );
+
+        ApiErrorResponse response = new ApiErrorResponse(
+                new ApiErrorResponse.ErrorBody(
+                        ErrorType.VALIDATION_ERROR,
+                        null,
+                        null,
+                        fieldErrors,
+                        null,
+                        isDev ? ex.getMessage() : null,
+                        requestId
+                ),
+                400
+        );
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<ApiErrorResponse> handleHttpRequestMethodNotSupported(
+            HttpRequestMethodNotSupportedException ex
+    ) {
+        String requestId = getRequestId();
+
+        log.warn("Method not supported: method={}, requestId={}", ex.getMethod(), requestId);
+
+        ApiErrorResponse response = ApiErrorResponse.internal(
+                isDev ? ex.getMessage() : null,
+                requestId
+        );
+
+        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(response);
     }
 
     private String getRequestId() {

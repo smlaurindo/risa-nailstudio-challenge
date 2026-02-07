@@ -15,11 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -28,13 +24,14 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/v1/services")
 public class ServiceController {
 
     private final GetAvailableServices getAvailableServices;
     private final GetService getService;
     private final CreateService createService;
 
-    @GetMapping(value = "/services", version = "1")
+    @GetMapping
     @PreAuthorize("hasAnyRole('CUSTOMER', 'ADMIN')")
     public ResponseEntity<List<GetServicesResponse>> getAvailableServices() {
         log.info("Fetching all available services");
@@ -46,7 +43,7 @@ public class ServiceController {
         return ResponseEntity.ok(GetServicesResponse.from(output));
     }
 
-    @GetMapping(value = "/services/{serviceId}", version = "1")
+    @GetMapping(path = "/{serviceId}")
     @PreAuthorize("hasAnyRole('CUSTOMER', 'ADMIN')")
     public ResponseEntity<GetServiceResponse> getService(@PathVariable String serviceId) {
         log.info("Fetching service: {}", serviceId);
@@ -58,7 +55,7 @@ public class ServiceController {
         return ResponseEntity.ok(GetServiceResponse.from(output));
     }
 
-    @PostMapping(value = "/services", version = "1")
+    @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<CreateServiceResponse> createService(
             @AuthenticationPrincipal Jwt jwt,

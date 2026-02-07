@@ -16,10 +16,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.Duration;
 
@@ -29,6 +26,7 @@ import static com.smlaurindo.risanailstudio.shared.constant.AuthConstants.REFRES
 @Slf4j
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/v1/auth")
 public class AuthController {
 
     private final SignUp signUp;
@@ -42,7 +40,7 @@ public class AuthController {
     @Value("${app.cookie.domain}")
     private String cookieDomain;
 
-    @PostMapping(value = "/auth/sign-up", version = "1")
+    @PostMapping(path = "/sign-up")
     public ResponseEntity<Void> signUp(@Valid @RequestBody SignUpRequest request) {
         log.info("Sign up request received for email: {}", request.email());
 
@@ -55,7 +53,7 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PostMapping(value = "/auth/sign-in", version = "1")
+    @PostMapping(path = "/sign-in")
     public ResponseEntity<SignInResponse> signIn(
             @Valid @RequestBody SignInRequest request
     ) {
@@ -95,7 +93,7 @@ public class AuthController {
                 .body(response);
     }
 
-    @PostMapping(value = "/auth/refresh", version = "1")
+    @PostMapping(path = "/refresh")
     public ResponseEntity<RefreshAccessTokenResponse> refresh(
             @CookieValue(name = REFRESH_TOKEN_COOKIE_NAME) String refreshToken
     ) {
@@ -127,7 +125,7 @@ public class AuthController {
                 .body(response);
     }
 
-    @PostMapping(value = "/auth/sign-out", version = "1")
+    @PostMapping(path = "/sign-out")
     public ResponseEntity<Void> signOut(@CookieValue(name = REFRESH_TOKEN_COOKIE_NAME) String refreshToken) {
         log.info("Logout attempt with refresh token");
 

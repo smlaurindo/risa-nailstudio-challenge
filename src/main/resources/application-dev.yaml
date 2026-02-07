@@ -37,3 +37,5 @@ app:
   cookie.domain: ""
 
 logging.level.com.smlaurindo.risanailstudio: DEBUG
+
+

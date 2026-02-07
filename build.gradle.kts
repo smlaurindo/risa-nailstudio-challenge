@@ -33,6 +33,9 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-security-oauth2-resource-server")
 	// implementation("org.flywaydb:flyway-database-postgresql")
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-api:3.0.1")
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.1")
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-scalar:3.0.1")
 	compileOnly("org.projectlombok:lombok")
 	runtimeOnly("org.postgresql:postgresql")
 	annotationProcessor("org.projectlombok:lombok")
@@ -41,6 +44,7 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-flyway-test")
 	testImplementation("org.springframework.boot:spring-boot-starter-validation-test")
 	testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
+	//testImplementation("org.springframework.security:spring-security-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
