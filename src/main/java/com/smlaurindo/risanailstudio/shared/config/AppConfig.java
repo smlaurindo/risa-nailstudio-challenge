@@ -85,4 +85,12 @@ public class AppConfig {
     ) {
         return new ConfirmAppointmentUseCase(adminRepository, appointmentRepository);
     }
+
+    @Bean
+    public CancelAppointment cancelAppointmentUseCase(
+            AdminRepository adminRepository,
+            AppointmentRepository appointmentRepository
+    ) {
+        return new CancelAppointmentUseCase(adminRepository, appointmentRepository);
+    }
 }

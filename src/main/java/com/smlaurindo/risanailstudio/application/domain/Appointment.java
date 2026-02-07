@@ -68,6 +68,15 @@ public class Appointment {
         this.confirmedAt = now();
     }
 
+    public void cancel() {
+        if (status == AppointmentStatus.CANCELLED) {
+            throw new BusinessRuleException(ErrorCode.APPOINTMENT_ALREADY_CANCELLED);
+        }
+
+        this.status = AppointmentStatus.CANCELLED;
+        this.cancelledAt = now();
+    }
+
     public String getId() {
         return id;
     }

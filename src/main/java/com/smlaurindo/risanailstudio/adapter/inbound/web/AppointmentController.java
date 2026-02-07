@@ -1,8 +1,10 @@
 package com.smlaurindo.risanailstudio.adapter.inbound.web;
 
 import com.smlaurindo.risanailstudio.adapter.inbound.web.dto.request.ScheduleAppointmentRequest;
+import com.smlaurindo.risanailstudio.adapter.inbound.web.dto.response.CancelAppointmentResponse;
 import com.smlaurindo.risanailstudio.adapter.inbound.web.dto.response.ConfirmAppointmentResponse;
 import com.smlaurindo.risanailstudio.adapter.inbound.web.dto.response.ScheduleAppointmentResponse;
+import com.smlaurindo.risanailstudio.application.usecase.CancelAppointment;
 import com.smlaurindo.risanailstudio.application.usecase.ConfirmAppointment;
 import com.smlaurindo.risanailstudio.application.usecase.ScheduleAppointment;
 import jakarta.validation.Valid;
@@ -28,6 +30,7 @@ public class AppointmentController {
 
     private final ScheduleAppointment scheduleAppointment;
     private final ConfirmAppointment confirmAppointment;
+    private final CancelAppointment cancelAppointment;
 
     @PostMapping(value = "/appointments", version = "1")
     @PreAuthorize("hasRole('CUSTOMER')")
@@ -72,5 +75,26 @@ public class AppointmentController {
         return ResponseEntity
                 .ok()
                 .body(ConfirmAppointmentResponse.fromOutput(output));
+    }
+
+    @PatchMapping(value = "/appointments/{appointmentId}/cancel", version = "1")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<CancelAppointmentResponse> cancelAppointment(
+            @AuthenticationPrincipal Jwt jwt,
+            @PathVariable String appointmentId
+    ) {
+        final String userId = jwt.getSubject();
+
+        log.info("Admin with credentials id {} cancelling appointment {}", userId, appointmentId);
+
+        final var output = cancelAppointment.cancelAppointment(
+                new CancelAppointment.CancelAppointmentInput(appointmentId, userId)
+        );
+
+        log.info("Admin with credentials id {} cancelled appointment {} successfully", userId, output.appointmentId());
+
+        return ResponseEntity
+                .ok()
+                .body(CancelAppointmentResponse.fromOutput(output));
     }
 }
