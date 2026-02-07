@@ -23,6 +23,13 @@ public class AppConfig {
     }
 
     @Bean
+    public GetService getServiceUseCase(
+            ServiceRepository serviceRepository
+    ) {
+        return new GetServiceUseCase(serviceRepository);
+    }
+
+    @Bean
     public SignUp signUpUseCase(
             CredentialsRepository credentialsRepository,
             CustomerRepository customerRepository,
