@@ -5,6 +5,10 @@ import com.smlaurindo.risanailstudio.application.domain.AppointmentSlot;
 import com.smlaurindo.risanailstudio.port.outbound.persistence.AppointmentRepository;
 import com.smlaurindo.risanailstudio.port.outbound.persistence.CustomerRepository;
 import com.smlaurindo.risanailstudio.port.outbound.persistence.ServiceRepository;
+import com.smlaurindo.risanailstudio.shared.exception.BusinessRuleException;
+import com.smlaurindo.risanailstudio.shared.exception.ConflictException;
+import com.smlaurindo.risanailstudio.shared.exception.ErrorCode;
+import com.smlaurindo.risanailstudio.shared.exception.NotFoundException;
 
 public class ScheduleAppointmentUseCase implements ScheduleAppointment {
 
@@ -20,8 +24,12 @@ public class ScheduleAppointmentUseCase implements ScheduleAppointment {
 
     @Override
     public ScheduleAppointmentOutput scheduleAppointment(ScheduleAppointmentInput input) {
-        var customer = customerRepository.findById(input.customerId())
-                .orElseThrow(() -> new IllegalArgumentException("Customer not found with id: " + input.customerId()));
+        var customer = customerRepository.findByCredentialsId(input.credentialsId())
+                .orElseThrow(() -> new NotFoundException(ErrorCode.CUSTOMER_NOT_FOUND));
+
+        if (customer.getName() == null && input.customerName() == null) {
+            throw new BusinessRuleException(ErrorCode.CUSTOMER_NAME_REQUIRED, "customerName");
+        }
 
         if (customer.getName() == null && input.customerName() != null) {
             customer.setName(input.customerName());
@@ -29,7 +37,7 @@ public class ScheduleAppointmentUseCase implements ScheduleAppointment {
         }
 
         var service = serviceRepository.findById(input.serviceId())
-                .orElseThrow(() -> new IllegalArgumentException("Service not found with id: " + input.serviceId()));
+                .orElseThrow(() -> new NotFoundException(ErrorCode.SERVICE_NOT_FOUND));
 
         var slot = AppointmentSlot.from(
                 input.scheduledTime(),
@@ -38,12 +46,12 @@ public class ScheduleAppointmentUseCase implements ScheduleAppointment {
         );
 
         if (!appointmentRepository.isSlotAvailable(slot)) {
-            throw new IllegalStateException("Appointment slot not available");
+            throw new ConflictException(ErrorCode.APPOINTMENT_SLOT_UNAVAILABLE, "scheduledTime");
         }
 
         var appointment = Appointment.schedule(
+                customer.getId(),
                 input.serviceId(),
-                input.customerId(),
                 slot
         );
 

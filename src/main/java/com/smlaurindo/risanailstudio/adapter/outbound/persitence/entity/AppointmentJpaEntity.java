@@ -39,10 +39,10 @@ public class AppointmentJpaEntity {
     @Enumerated(EnumType.STRING)
     private AppointmentStatus status;
 
-    @Column(name = "accepted_at", nullable = false)
+    @Column(name = "accepted_at")
     private Instant acceptedAt;
 
-    @Column(name = "cancelled_at", nullable = false)
+    @Column(name = "cancelled_at")
     private Instant cancelledAt;
 
     @Column(name = "created_at", nullable = false, updatable = false)

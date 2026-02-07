@@ -40,10 +40,10 @@ public class CustomerPersistenceAdapter implements CustomerRepository {
     }
 
     @Override
-    public Optional<Customer> findById(String id) {
-        log.debug("Finding customer by id: {}", id);
+    public Optional<Customer> findByCredentialsId(String credentialsId) {
+        log.debug("Finding customer by credentialsId: {}", credentialsId);
 
-        return customerJpaRepository.findById(id)
+        return customerJpaRepository.findByUserId(credentialsId)
                 .map(entity -> new Customer(
                         entity.getId(),
                         entity.getUser().getId(),

@@ -30,13 +30,13 @@ public class AppointmentController {
             @AuthenticationPrincipal Jwt jwt,
             @Valid @RequestBody ScheduleAppointmentRequest request
     ) {
-        final String customerId = jwt.getSubject();
+        final String userId = jwt.getSubject();
 
-        log.info("Consumer {} scheduling a appointment", customerId);
+        log.info("Customer with credentials id {} scheduling an appointment", userId);
 
-        final var output = scheduleAppointment.scheduleAppointment(request.toInput(customerId));
+        final var output = scheduleAppointment.scheduleAppointment(request.toInput(userId));
 
-        log.info("Consumer {} scheduled a appointment {}", customerId, output.appointmentId());
+        log.info("Customer with credentials id {} scheduled an appointment {} successfully", userId, output.appointmentId());
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")

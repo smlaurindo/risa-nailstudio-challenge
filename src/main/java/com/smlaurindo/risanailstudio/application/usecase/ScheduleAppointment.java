@@ -8,7 +8,7 @@ import java.time.LocalTime;
 
 public interface ScheduleAppointment {
     record ScheduleAppointmentInput(
-            String customerId,
+            String credentialsId,
             String customerName,
             String serviceId,
             LocalDate scheduledDate,
