@@ -1,9 +1,6 @@
 server:
   port: ${PORT:8888}
   shutdown: graceful
-
-
-
 spring:
   threads.virtual.enabled: true
   application:
@@ -15,7 +12,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     properties:
       hibernate:
         format_sql: true
@@ -26,7 +23,7 @@ app:
       methods: ${CORS_ALLOWED_METHODS:GET,POST,PUT,DELETE,OPTIONS,PATCH}
   env:
     is-dev: true
-    is-production: false
+    is-demo: false
   jwt:
     public-key: ${JWT_PUBLIC_KEY}
     private-key: ${JWT_PRIVATE_KEY}
@@ -36,6 +33,10 @@ app:
     password-salt: ${SECURITY_PASSWORD_SALT:16}
   cookie.domain: ""
 
+scalar:
+  theme: kepler
+  layout: modern
+  dark-mode: true
 springdoc:
   api-docs:
     path: /api-docs

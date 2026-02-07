@@ -23,6 +23,9 @@ public class OpenApiConfig {
     @Value("${server.port}")
     private int port;
 
+    @Value("${app.env.is-demo}")
+    private boolean isInDemo;
+
     @Bean
     public OpenAPI risaNailStudioOpenAPI() {
         return new OpenAPI()
@@ -86,7 +89,7 @@ public class OpenApiConfig {
                 .servers(List.of(
                         new Server()
                                 .url("http://localhost:" + port)
-                                .description("Development Server")))
+                                .description(isInDemo ? "Demonstration Server" : "Development Server")))
                 .addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
                 .addSecurityItem(new SecurityRequirement().addList("accessTokenCookieAuth"))
                 .addSecurityItem(new SecurityRequirement().addList("refreshTokenCookieAuth"))
