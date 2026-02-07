@@ -1,20 +1,38 @@
 package com.smlaurindo.risanailstudio.adapter.inbound.web.dto.request;
 
 import com.smlaurindo.risanailstudio.application.usecase.SignUp;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
+@Schema(description = "Data for new user registration")
 public record SignUpRequest(
-        @NotBlank(message = "Email is required")
-        @Email(message = "Email must be valid")
-        @Size(max = 255, message = "Email must be at most 255 characters")
+        @Schema(
+                description = "User email",
+                example = "user@example.com",
+                requiredMode = Schema.RequiredMode.REQUIRED,
+                maxLength = 255,
+                type = "string"
+        )
+        @NotBlank()
+        @Email()
+        @Size(max = 255)
         String email,
 
-        @NotBlank(message = "Password is required")
-        @Size(min = 8, max = 100, message = "Password must be between 8 and 100 characters")
-        @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&#])[A-Za-z\\d@$!%*?&#]+$", message = "Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character")
+        @Schema(
+                description = "User password. Must contain at least one uppercase letter, one lowercase letter, one digit, and one special character",
+                example = "Password@123",
+                requiredMode = Schema.RequiredMode.REQUIRED,
+                pattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&#])[A-Za-z\\d@$!%*?&#]+$",
+                minLength = 8,
+                maxLength = 100,
+                type = "string"
+        )
+        @NotBlank()
+        @Size(min = 8, max = 100)
+        @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&#])[A-Za-z\\d@$!%*?&#]+$")
         String password
 ) {
         public SignUpRequest {

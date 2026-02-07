@@ -90,7 +90,7 @@ public class SecurityConfig {
                                 .requestMatchers("/v1/auth/sign-in").permitAll()
                                 .requestMatchers("/swagger-ui.html").permitAll()
                                 .requestMatchers("/swagger-ui/**").permitAll()
-                                .requestMatchers("/v3/api-docs/**").permitAll()
+                                .requestMatchers("/api-docs/**").permitAll()
                                 .requestMatchers("/scalar/**").permitAll()
                                 .anyRequest().authenticated()
                 )
