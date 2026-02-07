@@ -57,4 +57,17 @@ public class UserPersistenceAdapter implements CredentialsRepository {
 
         return userJpaRepository.existsByEmail(email);
     }
+
+    @Override
+    public Optional<Credentials> findById(String id) {
+        log.debug("Finding user by id: {}", id);
+
+        return userJpaRepository.findById(id)
+                .map(user -> new Credentials(
+                        user.getId(),
+                        user.getEmail(),
+                        user.getPasswordHash(),
+                        user.getRole()
+                ));
+    }
 }

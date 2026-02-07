@@ -43,6 +43,13 @@ public record ApiErrorResponse(
             String field
     ) {}
 
+    public static ApiErrorResponse authentication(ErrorCode code, String requestId) {
+        return new ApiErrorResponse(
+                new ErrorBody(ErrorType.AUTHENTICATION_ERROR, code, requestId),
+                401
+        );
+    }
+
     public static ApiErrorResponse authorization(ErrorCode code, String requestId) {
         return new ApiErrorResponse(
                 new ErrorBody(ErrorType.AUTHORIZATION_ERROR, code, requestId),

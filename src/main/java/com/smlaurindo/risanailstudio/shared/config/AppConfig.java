@@ -46,6 +46,15 @@ public class AppConfig {
     }
 
     @Bean
+    public RefreshAccessToken refreshAccessTokenUseCase(
+            RefreshTokenRepository refreshTokenRepository,
+            CredentialsRepository credentialsRepository,
+            TokenGenerator tokenGenerator
+    ) {
+        return new RefreshAccessTokenUseCase(refreshTokenRepository, credentialsRepository, tokenGenerator);
+    }
+
+    @Bean
     public ScheduleAppointment scheduleAppointmentUseCase(
             CustomerRepository customerRepository,
             ServiceRepository serviceRepository,

@@ -8,4 +8,5 @@ public interface CredentialsRepository {
     boolean existsByEmail(String email);
     Credentials save(Credentials credentials);
     Optional<Credentials> findByEmail(String email);
+    Optional<Credentials> findById(String id);
 }

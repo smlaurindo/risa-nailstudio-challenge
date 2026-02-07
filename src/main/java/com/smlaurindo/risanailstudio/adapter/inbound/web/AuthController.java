@@ -2,7 +2,9 @@ package com.smlaurindo.risanailstudio.adapter.inbound.web;
 
 import com.smlaurindo.risanailstudio.adapter.inbound.web.dto.request.SignInRequest;
 import com.smlaurindo.risanailstudio.adapter.inbound.web.dto.request.SignUpRequest;
+import com.smlaurindo.risanailstudio.adapter.inbound.web.dto.response.RefreshAccessTokenResponse;
 import com.smlaurindo.risanailstudio.adapter.inbound.web.dto.response.SignInResponse;
+import com.smlaurindo.risanailstudio.application.usecase.RefreshAccessToken;
 import com.smlaurindo.risanailstudio.application.usecase.SignIn;
 import com.smlaurindo.risanailstudio.application.usecase.SignOut;
 import com.smlaurindo.risanailstudio.application.usecase.SignUp;
@@ -32,6 +34,7 @@ public class AuthController {
     private final SignUp signUp;
     private final SignIn signIn;
     private final SignOut signOut;
+    private final RefreshAccessToken refreshAccessToken;
 
     @Value("${app.env.is-dev}")
     private boolean isDev;
@@ -89,6 +92,38 @@ public class AuthController {
                 .status(HttpStatus.OK)
                 .header(HttpHeaders.SET_COOKIE, accessTokenCookie.toString())
                 .header(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString())
+                .body(response);
+    }
+
+    @PostMapping(value = "/auth/refresh", version = "1")
+    public ResponseEntity<RefreshAccessTokenResponse> refresh(
+            @CookieValue(name = REFRESH_TOKEN_COOKIE_NAME) String refreshToken
+    ) {
+        log.info("Refresh access token attempt");
+
+        var input = new RefreshAccessToken.RefreshAccessTokenInput(refreshToken);
+        var output = refreshAccessToken.refreshAccessToken(input);
+
+        var accessTokenCookieBuilder = ResponseCookie.from(ACCESS_TOKEN_COOKIE_NAME, output.accessToken().token())
+                .httpOnly(true)
+                .secure(!isDev)
+                .sameSite("Lax")
+                .path("/")
+                .maxAge(Duration.between(output.accessToken().issuedAt(), output.accessToken().expiresAt()));
+
+        if (!isDev && !cookieDomain.isEmpty()) {
+            accessTokenCookieBuilder.domain(cookieDomain);
+        }
+
+        ResponseCookie accessTokenCookie = accessTokenCookieBuilder.build();
+
+        log.info("Access token refreshed successfully");
+
+        var response = RefreshAccessTokenResponse.from(output);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .header(HttpHeaders.SET_COOKIE, accessTokenCookie.toString())
                 .body(response);
     }
 
