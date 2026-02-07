@@ -36,7 +36,7 @@ public class TokenGeneratorAdapter implements TokenGenerator {
         var claims = JwtClaimsSet.builder()
                 .subject(subject)
                 .issuedAt(now())
-                .claim("roles", role.name())
+                .claim("roles", List.of(role.name()))
                 .expiresAt(expiresAt)
                 .build();
 

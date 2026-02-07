@@ -32,12 +32,23 @@ public record ApiErrorResponse(
             Map<String, Object> meta,
             String message,
             String requestId
-    ) {}
+    ) {
+        public ErrorBody(ErrorType type, ErrorCode code, String requestId) {
+            this(type, code, null, null, null, null, requestId);
+        }
+    }
 
     public record FieldError(
             ErrorCode.Validation code,
             String field
     ) {}
+
+    public static ApiErrorResponse authorization(ErrorCode code, String requestId) {
+        return new ApiErrorResponse(
+                new ErrorBody(ErrorType.AUTHORIZATION_ERROR, code, requestId),
+                403
+        );
+    }
 
     public static ApiErrorResponse internal(String message, String requestId) {
         return new ApiErrorResponse(

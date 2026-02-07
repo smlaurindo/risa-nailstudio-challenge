@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum ErrorType {
     AUTHENTICATION_ERROR("authentication_error"),
+    AUTHORIZATION_ERROR("authorization_error"),
     VALIDATION_ERROR("validation_error"),
     CONFLICT("conflict"),
     NOT_FOUND("not_found"),
