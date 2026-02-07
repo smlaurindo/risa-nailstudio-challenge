@@ -1,4 +1,4 @@
-package com.smlaurindo.risanailstudio.shared.dto;
+package com.smlaurindo.risanailstudio.adapter.inbound.web.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.smlaurindo.risanailstudio.application.exception.ErrorCode;

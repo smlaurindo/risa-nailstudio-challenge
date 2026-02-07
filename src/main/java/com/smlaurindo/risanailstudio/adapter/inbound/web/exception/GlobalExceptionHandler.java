@@ -1,10 +1,10 @@
-package com.smlaurindo.risanailstudio.shared.exception;
+package com.smlaurindo.risanailstudio.adapter.inbound.web.exception;
 
 import com.smlaurindo.risanailstudio.application.exception.ErrorCode;
 import com.smlaurindo.risanailstudio.application.exception.ErrorType;
 import com.smlaurindo.risanailstudio.application.exception.BaseException;
-import com.smlaurindo.risanailstudio.shared.dto.ApiErrorResponse;
-import com.smlaurindo.risanailstudio.shared.filter.RequestIdFilter;
+import com.smlaurindo.risanailstudio.adapter.inbound.web.dto.response.ApiErrorResponse;
+import com.smlaurindo.risanailstudio.adapter.inbound.web.filter.RequestIdFilter;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;

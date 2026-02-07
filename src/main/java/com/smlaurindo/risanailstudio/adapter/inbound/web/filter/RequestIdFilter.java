@@ -1,4 +1,4 @@
-package com.smlaurindo.risanailstudio.shared.filter;
+package com.smlaurindo.risanailstudio.adapter.inbound.web.filter;
 
 import com.smlaurindo.risanailstudio.shared.utils.RequestIdGenerator;
 import jakarta.servlet.FilterChain;
