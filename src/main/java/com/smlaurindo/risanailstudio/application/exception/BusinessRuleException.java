@@ -1,6 +1,6 @@
-package com.smlaurindo.risanailstudio.shared.exception;
+package com.smlaurindo.risanailstudio.application.exception;
 
-public class BusinessRuleException extends ApiException {
+public class BusinessRuleException extends BaseException {
 
     public BusinessRuleException(ErrorCode code, String field) {
         super(ErrorType.BUSINESS_RULE, code, field);

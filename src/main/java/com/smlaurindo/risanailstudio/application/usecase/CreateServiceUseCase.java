@@ -2,12 +2,9 @@ package com.smlaurindo.risanailstudio.application.usecase;
 
 import com.smlaurindo.risanailstudio.application.domain.Service;
 import com.smlaurindo.risanailstudio.port.outbound.persistence.AdminRepository;
-import com.smlaurindo.risanailstudio.port.outbound.persistence.CredentialsRepository;
 import com.smlaurindo.risanailstudio.port.outbound.persistence.ServiceRepository;
-import com.smlaurindo.risanailstudio.shared.exception.AuthorizationException;
-import com.smlaurindo.risanailstudio.shared.exception.ErrorCode;
-
-import java.util.UUID;
+import com.smlaurindo.risanailstudio.application.exception.AuthorizationException;
+import com.smlaurindo.risanailstudio.application.exception.ErrorCode;
 
 public class CreateServiceUseCase implements CreateService {
 

@@ -1,6 +1,6 @@
-package com.smlaurindo.risanailstudio.shared.exception;
+package com.smlaurindo.risanailstudio.application.exception;
 
-public class NotFoundException extends ApiException {
+public class NotFoundException extends BaseException {
     public NotFoundException(ErrorCode code) {
         super(ErrorType.NOT_FOUND, code);
     }

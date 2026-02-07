@@ -1,6 +1,6 @@
-package com.smlaurindo.risanailstudio.shared.exception;
+package com.smlaurindo.risanailstudio.application.exception;
 
-public class AuthorizationException extends ApiException {
+public class AuthorizationException extends BaseException {
 
     public AuthorizationException(ErrorCode code) {
         super(ErrorType.AUTHORIZATION_ERROR, code);

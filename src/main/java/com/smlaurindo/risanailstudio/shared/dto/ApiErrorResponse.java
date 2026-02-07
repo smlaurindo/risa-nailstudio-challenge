@@ -1,8 +1,8 @@
 package com.smlaurindo.risanailstudio.shared.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.smlaurindo.risanailstudio.shared.exception.ErrorCode;
-import com.smlaurindo.risanailstudio.shared.exception.ErrorType;
+import com.smlaurindo.risanailstudio.application.exception.ErrorCode;
+import com.smlaurindo.risanailstudio.application.exception.ErrorType;
 
 import java.util.List;
 import java.util.Map;

@@ -3,8 +3,8 @@ package com.smlaurindo.risanailstudio.application.usecase;
 import com.smlaurindo.risanailstudio.port.outbound.persistence.CredentialsRepository;
 import com.smlaurindo.risanailstudio.port.outbound.security.PasswordHasher;
 import com.smlaurindo.risanailstudio.port.outbound.security.TokenGenerator;
-import com.smlaurindo.risanailstudio.shared.exception.AuthenticationException;
-import com.smlaurindo.risanailstudio.shared.exception.ErrorCode;
+import com.smlaurindo.risanailstudio.application.exception.AuthenticationException;
+import com.smlaurindo.risanailstudio.application.exception.ErrorCode;
 
 public class SignInUseCase implements SignIn {
 

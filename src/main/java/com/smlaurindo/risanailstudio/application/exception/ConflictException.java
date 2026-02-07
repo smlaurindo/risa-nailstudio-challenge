@@ -1,6 +1,6 @@
-package com.smlaurindo.risanailstudio.shared.exception;
+package com.smlaurindo.risanailstudio.application.exception;
 
-public class ConflictException extends ApiException {
+public class ConflictException extends BaseException {
 
     public ConflictException(ErrorCode code, String field) {
         super(ErrorType.CONFLICT, code, field);

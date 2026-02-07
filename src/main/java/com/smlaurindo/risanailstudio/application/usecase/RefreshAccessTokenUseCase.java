@@ -3,8 +3,8 @@ package com.smlaurindo.risanailstudio.application.usecase;
 import com.smlaurindo.risanailstudio.port.outbound.persistence.CredentialsRepository;
 import com.smlaurindo.risanailstudio.port.outbound.persistence.RefreshTokenRepository;
 import com.smlaurindo.risanailstudio.port.outbound.security.TokenGenerator;
-import com.smlaurindo.risanailstudio.shared.exception.AuthenticationException;
-import com.smlaurindo.risanailstudio.shared.exception.ErrorCode;
+import com.smlaurindo.risanailstudio.application.exception.AuthenticationException;
+import com.smlaurindo.risanailstudio.application.exception.ErrorCode;
 
 import java.time.Instant;
 

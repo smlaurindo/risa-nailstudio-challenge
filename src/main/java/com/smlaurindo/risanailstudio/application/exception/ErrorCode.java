@@ -1,4 +1,4 @@
-package com.smlaurindo.risanailstudio.shared.exception;
+package com.smlaurindo.risanailstudio.application.exception;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 

@@ -1,8 +1,8 @@
 package com.smlaurindo.risanailstudio.application.usecase;
 
 import com.smlaurindo.risanailstudio.port.outbound.persistence.ServiceRepository;
-import com.smlaurindo.risanailstudio.shared.exception.ErrorCode;
-import com.smlaurindo.risanailstudio.shared.exception.NotFoundException;
+import com.smlaurindo.risanailstudio.application.exception.ErrorCode;
+import com.smlaurindo.risanailstudio.application.exception.NotFoundException;
 
 public class GetServiceUseCase implements GetService {
 

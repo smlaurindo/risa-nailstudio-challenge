@@ -2,9 +2,9 @@ package com.smlaurindo.risanailstudio.application.usecase;
 
 import com.smlaurindo.risanailstudio.port.outbound.persistence.AdminRepository;
 import com.smlaurindo.risanailstudio.port.outbound.persistence.AppointmentRepository;
-import com.smlaurindo.risanailstudio.shared.exception.AuthorizationException;
-import com.smlaurindo.risanailstudio.shared.exception.ErrorCode;
-import com.smlaurindo.risanailstudio.shared.exception.NotFoundException;
+import com.smlaurindo.risanailstudio.application.exception.AuthorizationException;
+import com.smlaurindo.risanailstudio.application.exception.ErrorCode;
+import com.smlaurindo.risanailstudio.application.exception.NotFoundException;
 
 public class CancelAppointmentUseCase implements CancelAppointment {
 

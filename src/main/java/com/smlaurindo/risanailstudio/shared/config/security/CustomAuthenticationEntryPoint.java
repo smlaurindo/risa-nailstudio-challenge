@@ -1,7 +1,7 @@
 package com.smlaurindo.risanailstudio.shared.config.security;
 
 import com.smlaurindo.risanailstudio.shared.dto.ApiErrorResponse;
-import com.smlaurindo.risanailstudio.shared.exception.ErrorCode;
+import com.smlaurindo.risanailstudio.application.exception.ErrorCode;
 import com.smlaurindo.risanailstudio.shared.filter.RequestIdFilter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

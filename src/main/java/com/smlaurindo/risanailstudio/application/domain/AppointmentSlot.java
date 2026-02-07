@@ -1,7 +1,7 @@
 package com.smlaurindo.risanailstudio.application.domain;
 
-import com.smlaurindo.risanailstudio.shared.exception.BusinessRuleException;
-import com.smlaurindo.risanailstudio.shared.exception.ErrorCode;
+import com.smlaurindo.risanailstudio.application.exception.BusinessRuleException;
+import com.smlaurindo.risanailstudio.application.exception.ErrorCode;
 
 import java.time.*;
 

@@ -5,10 +5,10 @@ import com.smlaurindo.risanailstudio.application.domain.AppointmentSlot;
 import com.smlaurindo.risanailstudio.port.outbound.persistence.AppointmentRepository;
 import com.smlaurindo.risanailstudio.port.outbound.persistence.CustomerRepository;
 import com.smlaurindo.risanailstudio.port.outbound.persistence.ServiceRepository;
-import com.smlaurindo.risanailstudio.shared.exception.BusinessRuleException;
-import com.smlaurindo.risanailstudio.shared.exception.ConflictException;
-import com.smlaurindo.risanailstudio.shared.exception.ErrorCode;
-import com.smlaurindo.risanailstudio.shared.exception.NotFoundException;
+import com.smlaurindo.risanailstudio.application.exception.BusinessRuleException;
+import com.smlaurindo.risanailstudio.application.exception.ConflictException;
+import com.smlaurindo.risanailstudio.application.exception.ErrorCode;
+import com.smlaurindo.risanailstudio.application.exception.NotFoundException;
 
 public class ScheduleAppointmentUseCase implements ScheduleAppointment {
 

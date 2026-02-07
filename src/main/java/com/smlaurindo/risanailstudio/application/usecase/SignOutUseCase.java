@@ -1,8 +1,8 @@
 package com.smlaurindo.risanailstudio.application.usecase;
 
 import com.smlaurindo.risanailstudio.port.outbound.persistence.RefreshTokenRepository;
-import com.smlaurindo.risanailstudio.shared.exception.AuthenticationException;
-import com.smlaurindo.risanailstudio.shared.exception.ErrorCode;
+import com.smlaurindo.risanailstudio.application.exception.AuthenticationException;
+import com.smlaurindo.risanailstudio.application.exception.ErrorCode;
 
 public class SignOutUseCase implements SignOut {
 

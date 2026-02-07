@@ -6,8 +6,8 @@ import com.smlaurindo.risanailstudio.application.domain.Role;
 import com.smlaurindo.risanailstudio.port.outbound.persistence.CredentialsRepository;
 import com.smlaurindo.risanailstudio.port.outbound.persistence.CustomerRepository;
 import com.smlaurindo.risanailstudio.port.outbound.security.PasswordHasher;
-import com.smlaurindo.risanailstudio.shared.exception.ConflictException;
-import com.smlaurindo.risanailstudio.shared.exception.ErrorCode;
+import com.smlaurindo.risanailstudio.application.exception.ConflictException;
+import com.smlaurindo.risanailstudio.application.exception.ErrorCode;
 
 public class SignUpUseCase implements SignUp {
 

@@ -2,13 +2,10 @@ package com.smlaurindo.risanailstudio.application.usecase;
 
 import com.smlaurindo.risanailstudio.port.outbound.persistence.AdminRepository;
 import com.smlaurindo.risanailstudio.port.outbound.persistence.AppointmentRepository;
-import com.smlaurindo.risanailstudio.shared.exception.AuthorizationException;
-import com.smlaurindo.risanailstudio.shared.exception.BusinessRuleException;
-import com.smlaurindo.risanailstudio.shared.exception.ErrorCode;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import com.smlaurindo.risanailstudio.application.exception.AuthorizationException;
+import com.smlaurindo.risanailstudio.application.exception.BusinessRuleException;
+import com.smlaurindo.risanailstudio.application.exception.ErrorCode;
 
-import java.time.Duration;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.List;

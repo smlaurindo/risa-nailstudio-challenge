@@ -1,8 +1,6 @@
-package com.smlaurindo.risanailstudio.shared.exception;
+package com.smlaurindo.risanailstudio.application.exception;
 
-import java.util.Map;
-
-public class AuthenticationException extends ApiException {
+public class AuthenticationException extends BaseException {
 
     public AuthenticationException(ErrorCode code) {
         super(ErrorType.AUTHENTICATION_ERROR, code);

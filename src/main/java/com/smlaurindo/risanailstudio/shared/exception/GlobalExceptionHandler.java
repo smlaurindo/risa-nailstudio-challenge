@@ -1,5 +1,8 @@
 package com.smlaurindo.risanailstudio.shared.exception;
 
+import com.smlaurindo.risanailstudio.application.exception.ErrorCode;
+import com.smlaurindo.risanailstudio.application.exception.ErrorType;
+import com.smlaurindo.risanailstudio.application.exception.BaseException;
 import com.smlaurindo.risanailstudio.shared.dto.ApiErrorResponse;
 import com.smlaurindo.risanailstudio.shared.filter.RequestIdFilter;
 import jakarta.validation.ConstraintViolation;
@@ -9,19 +12,14 @@ import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.authorization.AuthorizationDeniedException;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -150,8 +148,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
-    @ExceptionHandler(ApiException.class)
-    public ResponseEntity<ApiErrorResponse> handleApiException(ApiException ex) {
+    @ExceptionHandler(BaseException.class)
+    public ResponseEntity<ApiErrorResponse> handleApiException(BaseException ex) {
         String requestId = getRequestId();
 
         log.warn("API exception: type={}, code={}, field={}, requestId={}",

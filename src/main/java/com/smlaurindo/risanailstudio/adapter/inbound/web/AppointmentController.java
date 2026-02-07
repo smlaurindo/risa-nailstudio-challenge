@@ -1,5 +1,6 @@
 package com.smlaurindo.risanailstudio.adapter.inbound.web;
 
+import com.smlaurindo.risanailstudio.adapter.inbound.web.dto.request.AppointmentStatusFilter;
 import com.smlaurindo.risanailstudio.adapter.inbound.web.dto.request.ScheduleAppointmentRequest;
 import com.smlaurindo.risanailstudio.adapter.inbound.web.dto.response.CancelAppointmentResponse;
 import com.smlaurindo.risanailstudio.adapter.inbound.web.dto.response.ConfirmAppointmentResponse;
@@ -28,7 +29,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -66,21 +66,7 @@ public class AppointmentController {
                 .body(ScheduleAppointmentResponse.fromOutput(output));
     }
 
-    public enum AppointmentStatusFilter {
-        ALL,
-        PENDING,
-        CONFIRMED,
-        CANCELLED;
 
-        public AppointmentStatus toAppointmentStatus() {
-            return switch (this) {
-                case ALL -> null;
-                case PENDING -> AppointmentStatus.PENDING;
-                case CONFIRMED -> AppointmentStatus.CONFIRMED;
-                case CANCELLED -> AppointmentStatus.CANCELLED;
-            };
-        }
-    }
 
     @GetMapping(value = "/appointments", version = "1")
     @PreAuthorize("hasRole('ADMIN')")
