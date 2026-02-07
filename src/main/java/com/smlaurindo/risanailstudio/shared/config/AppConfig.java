@@ -5,6 +5,7 @@ import com.smlaurindo.risanailstudio.application.usecase.*;
 import com.smlaurindo.risanailstudio.port.outbound.persistence.AppointmentRepository;
 import com.smlaurindo.risanailstudio.port.outbound.persistence.CredentialsRepository;
 import com.smlaurindo.risanailstudio.port.outbound.persistence.CustomerRepository;
+import com.smlaurindo.risanailstudio.port.outbound.persistence.RefreshTokenRepository;
 import com.smlaurindo.risanailstudio.port.outbound.persistence.ServiceRepository;
 import com.smlaurindo.risanailstudio.port.outbound.security.PasswordHasher;
 import com.smlaurindo.risanailstudio.port.outbound.security.TokenGenerator;
@@ -37,6 +38,11 @@ public class AppConfig {
             PasswordHasher passwordHasher
     ) {
         return new SignInUseCase(tokenGenerator, credentialsRepository, passwordHasher);
+    }
+
+    @Bean
+    public SignOut signOutUseCase(RefreshTokenRepository refreshTokenRepository) {
+        return new SignOutUseCase(refreshTokenRepository);
     }
 
     @Bean

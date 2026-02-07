@@ -4,6 +4,7 @@ import com.smlaurindo.risanailstudio.adapter.inbound.web.dto.request.SignInReque
 import com.smlaurindo.risanailstudio.adapter.inbound.web.dto.request.SignUpRequest;
 import com.smlaurindo.risanailstudio.adapter.inbound.web.dto.response.SignInResponse;
 import com.smlaurindo.risanailstudio.application.usecase.SignIn;
+import com.smlaurindo.risanailstudio.application.usecase.SignOut;
 import com.smlaurindo.risanailstudio.application.usecase.SignUp;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,6 +31,7 @@ public class AuthController {
 
     private final SignUp signUp;
     private final SignIn signIn;
+    private final SignOut signOut;
 
     @Value("${app.env.is-dev}")
     private boolean isDev;
@@ -87,5 +90,38 @@ public class AuthController {
                 .header(HttpHeaders.SET_COOKIE, accessTokenCookie.toString())
                 .header(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString())
                 .body(response);
+    }
+
+    @PostMapping(value = "/auth/sign-out", version = "1")
+    public ResponseEntity<Void> signOut(@CookieValue(name = REFRESH_TOKEN_COOKIE_NAME) String refreshToken) {
+        log.info("Logout attempt with refresh token");
+
+        var input = new SignOut.SignOutInput(refreshToken);
+
+        signOut.signOut(input);
+
+        var accessTokenCookie = ResponseCookie.from(ACCESS_TOKEN_COOKIE_NAME, "")
+                .httpOnly(true)
+                .secure(!isDev)
+                .sameSite("Lax")
+                .path("/")
+                .maxAge(0)
+                .build();
+
+        var refreshTokenCookie = ResponseCookie.from(REFRESH_TOKEN_COOKIE_NAME, "")
+                .httpOnly(true)
+                .secure(!isDev)
+                .sameSite("Lax")
+                .path("/")
+                .maxAge(0)
+                .build();
+
+        log.info("Logout successful");
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .header(HttpHeaders.SET_COOKIE, accessTokenCookie.toString())
+                .header(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString())
+                .build();
     }
 }

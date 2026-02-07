@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
 public enum ErrorCode {
     USER_ALREADY_EXISTS,
     INVALID_CREDENTIALS,
+    INVALID_TOKEN,
+    TOKEN_REVOKED,
     INSUFFICIENT_PRIVILEGES,
     CUSTOMER_NOT_FOUND,
     SERVICE_NOT_FOUND,

@@ -40,4 +40,19 @@ public class RefreshTokenPersistenceAdapter implements RefreshTokenRepository {
                 saved.isRevoked()
         );
     }
+
+    @Override
+    public java.util.Optional<RefreshToken> findByToken(String token) {
+        log.debug("Finding refresh token by token");
+        
+        return refreshTokenJpaRepository.findByToken(token)
+                .map(entity -> new RefreshToken(
+                        entity.getId(),
+                        entity.getToken(),
+                        entity.getSubject().getId(),
+                        entity.getIssuedAt(),
+                        entity.getExpiresAt(),
+                        entity.isRevoked()
+                ));
+    }
 }
