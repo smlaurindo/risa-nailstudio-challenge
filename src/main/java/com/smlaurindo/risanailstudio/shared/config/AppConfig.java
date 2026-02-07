@@ -2,11 +2,7 @@ package com.smlaurindo.risanailstudio.shared.config;
 
 import com.smlaurindo.risanailstudio.application.usecase.*;
 
-import com.smlaurindo.risanailstudio.port.outbound.persistence.AppointmentRepository;
-import com.smlaurindo.risanailstudio.port.outbound.persistence.CredentialsRepository;
-import com.smlaurindo.risanailstudio.port.outbound.persistence.CustomerRepository;
-import com.smlaurindo.risanailstudio.port.outbound.persistence.RefreshTokenRepository;
-import com.smlaurindo.risanailstudio.port.outbound.persistence.ServiceRepository;
+import com.smlaurindo.risanailstudio.port.outbound.persistence.*;
 import com.smlaurindo.risanailstudio.port.outbound.security.PasswordHasher;
 import com.smlaurindo.risanailstudio.port.outbound.security.TokenGenerator;
 import org.springframework.context.annotation.Bean;
@@ -27,6 +23,14 @@ public class AppConfig {
             ServiceRepository serviceRepository
     ) {
         return new GetServiceUseCase(serviceRepository);
+    }
+
+    @Bean
+    public CreateService createServiceUseCase(
+            AdminRepository adminRepository,
+            ServiceRepository serviceRepository
+    ) {
+        return new CreateServiceUseCase(adminRepository, serviceRepository);
     }
 
     @Bean

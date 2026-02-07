@@ -27,4 +27,19 @@ public class ServicePersistenceAdapter implements ServiceRepository {
     public Optional<Service> findById(String serviceId) {
         return serviceJpaRepository.findById(serviceId).map(ServiceJpaEntity::toDomain);
     }
+
+    @Override
+    public Service save(Service service) {
+        ServiceJpaEntity entity = ServiceJpaEntity.builder()
+                .id(service.getId())
+                .name(service.getName())
+                .durationMinutes(service.getDurationMinutes())
+                .priceCents(service.getPriceCents())
+                .icon(service.getIcon())
+                .build();
+
+        ServiceJpaEntity saved = serviceJpaRepository.save(entity);
+
+        return saved.toDomain();
+    }
 }

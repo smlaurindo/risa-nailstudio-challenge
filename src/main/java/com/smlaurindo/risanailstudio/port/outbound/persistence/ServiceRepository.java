@@ -7,6 +7,6 @@ import java.util.Optional;
 
 public interface ServiceRepository {
     List<Service> findAllAvailableServices();
-
     Optional<Service> findById(String serviceId);
+    Service save(Service service);
 }
