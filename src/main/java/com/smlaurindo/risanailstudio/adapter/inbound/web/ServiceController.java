@@ -37,14 +37,24 @@ public class ServiceController {
     @GetMapping(value = "/services", version = "1")
     @PreAuthorize("hasAnyRole('CUSTOMER', 'ADMIN')")
     public ResponseEntity<List<GetServicesResponse>> getAvailableServices() {
+        log.info("Fetching all available services");
+
         final var output = getAvailableServices.getAvailableServices();
+
+        log.info("Found {} available services", output.size());
+
         return ResponseEntity.ok(GetServicesResponse.from(output));
     }
 
     @GetMapping(value = "/services/{serviceId}", version = "1")
     @PreAuthorize("hasAnyRole('CUSTOMER', 'ADMIN')")
     public ResponseEntity<GetServiceResponse> getService(@PathVariable String serviceId) {
+        log.info("Fetching service: {}", serviceId);
+
         final var output = getService.getService(serviceId);
+
+        log.info("Service {} found", serviceId);
+
         return ResponseEntity.ok(GetServiceResponse.from(output));
     }
 
@@ -54,7 +64,13 @@ public class ServiceController {
             @AuthenticationPrincipal Jwt jwt,
             @Valid @RequestBody CreateServiceRequest request
     ) {
-        final var output = createService.createService(request.toInput(jwt.getSubject()));
+        final String userId = jwt.getSubject();
+
+        log.info("Admin with credentials id {} creating a new service: {}", userId, request.name());
+
+        final var output = createService.createService(request.toInput(userId));
+
+        log.info("Admin with credentials id {} successfully created service {} with id: {}", userId, output.name(), output.id());
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
