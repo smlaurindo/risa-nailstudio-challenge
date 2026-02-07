@@ -4,14 +4,13 @@ import com.smlaurindo.risanailstudio.application.domain.AppointmentStatus;
 import com.smlaurindo.risanailstudio.application.usecase.ConfirmAppointment;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 
 public record ConfirmAppointmentResponse(
         String id,
         String customerId,
         String serviceId,
-        LocalDateTime startsAt,
-        LocalDateTime endsAt,
+        Instant startsAt,
+        Instant endsAt,
         AppointmentStatus appointmentStatus,
         Instant confirmedAt
 ) {

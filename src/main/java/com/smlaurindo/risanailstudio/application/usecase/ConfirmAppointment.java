@@ -3,7 +3,6 @@ package com.smlaurindo.risanailstudio.application.usecase;
 import com.smlaurindo.risanailstudio.application.domain.AppointmentStatus;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 
 public interface ConfirmAppointment {
     record ConfirmAppointmentInput(
@@ -15,8 +14,8 @@ public interface ConfirmAppointment {
             String appointmentId,
             String customerId,
             String serviceId,
-            LocalDateTime startsAt,
-            LocalDateTime endsAt,
+            Instant startsAt,
+            Instant endsAt,
             AppointmentStatus appointmentStatus,
             Instant confirmedAt
     ) {}

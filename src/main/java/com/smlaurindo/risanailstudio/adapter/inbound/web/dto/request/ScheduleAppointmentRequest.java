@@ -1,13 +1,9 @@
 package com.smlaurindo.risanailstudio.adapter.inbound.web.dto.request;
 
 import com.smlaurindo.risanailstudio.application.usecase.ScheduleAppointment;
-import jakarta.validation.constraints.FutureOrPresent;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.Instant;
 
 public record ScheduleAppointmentRequest(
         @Size(min = 2, max = 100)
@@ -17,11 +13,8 @@ public record ScheduleAppointmentRequest(
         String serviceId,
 
         @NotNull()
-        @FutureOrPresent()
-        LocalDate scheduledDate,
-
-        @NotNull()
-        LocalTime scheduledTime
+        @Future()
+        Instant scheduledAt
 ) {
     public ScheduleAppointmentRequest {
         if (customerName != null) {
@@ -37,8 +30,7 @@ public record ScheduleAppointmentRequest(
                 credentialsId,
                 customerName,
                 serviceId,
-                scheduledDate,
-                scheduledTime
+                scheduledAt
         );
     }
 }

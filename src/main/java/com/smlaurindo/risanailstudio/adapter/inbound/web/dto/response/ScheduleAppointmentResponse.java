@@ -3,14 +3,14 @@ package com.smlaurindo.risanailstudio.adapter.inbound.web.dto.response;
 import com.smlaurindo.risanailstudio.application.domain.AppointmentStatus;
 import com.smlaurindo.risanailstudio.application.usecase.ScheduleAppointment;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 public record ScheduleAppointmentResponse(
         String id,
         String customerId,
         String serviceId,
-        LocalDateTime startsAt,
-        LocalDateTime endsAt,
+        Instant startsAt,
+        Instant endsAt,
         AppointmentStatus appointmentStatus
 ) {
     public static ScheduleAppointmentResponse fromOutput(

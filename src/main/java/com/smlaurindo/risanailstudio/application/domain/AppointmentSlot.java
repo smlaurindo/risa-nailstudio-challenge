@@ -1,36 +1,31 @@
 package com.smlaurindo.risanailstudio.application.domain;
 
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import com.smlaurindo.risanailstudio.shared.exception.BusinessRuleException;
+import com.smlaurindo.risanailstudio.shared.exception.ErrorCode;
+
+import java.time.*;
 
 public record AppointmentSlot(
-        LocalDateTime startsAt,
-        LocalDateTime endsAt
+        Instant startsAt,
+        Instant endsAt
 ) {
     public AppointmentSlot {
-        if (endsAt.isBefore(startsAt) || endsAt.isEqual(startsAt)) {
-            throw new IllegalArgumentException(
-                    "AppointmentSlot endsAt must be after startsAt"
-            );
+        if (endsAt.isBefore(startsAt) || endsAt.equals(startsAt)) {
+            throw new BusinessRuleException(ErrorCode.APPOINTMENT_SLOT_INVALID);
         }
     }
 
-    public static AppointmentSlot from(LocalTime localTime, LocalDate localDate, int durationMinutes) {
-        var startsAt = LocalDateTime.of(localDate, localTime);
-        var endsAt = startsAt.plusMinutes(durationMinutes);
-
-        return new AppointmentSlot(startsAt, endsAt);
-    }
-
-    public boolean overlaps(AppointmentSlot other) {
-        return startsAt.isBefore(other.endsAt)
-                && endsAt.isAfter(other.startsAt);
+    public static AppointmentSlot from(Instant scheduledAt, int durationMinutes) {
+        var endsAt = scheduledAt.plus(Duration.ofMinutes(durationMinutes));
+        return new AppointmentSlot(scheduledAt, endsAt);
     }
 
     public Duration getDuration() {
         return Duration.between(startsAt, endsAt);
+    }
+
+    public boolean isInThePast() {
+        return startsAt.isBefore(Instant.now());
     }
 }
 

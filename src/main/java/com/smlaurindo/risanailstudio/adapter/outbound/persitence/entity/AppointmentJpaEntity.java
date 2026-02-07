@@ -8,7 +8,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "appointments")
@@ -30,10 +29,10 @@ public class AppointmentJpaEntity {
     private ServiceJpaEntity service;
 
     @Column(name = "starts_at", nullable = false)
-    private LocalDateTime startsAt;
+    private Instant startsAt;
 
     @Column(name = "ends_at", nullable = false)
-    private LocalDateTime endsAt;
+    private Instant endsAt;
 
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)

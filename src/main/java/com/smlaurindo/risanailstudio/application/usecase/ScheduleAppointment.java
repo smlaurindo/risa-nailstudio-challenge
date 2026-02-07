@@ -2,25 +2,22 @@ package com.smlaurindo.risanailstudio.application.usecase;
 
 import com.smlaurindo.risanailstudio.application.domain.AppointmentStatus;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.Instant;
 
 public interface ScheduleAppointment {
     record ScheduleAppointmentInput(
             String credentialsId,
             String customerName,
             String serviceId,
-            LocalDate scheduledDate,
-            LocalTime scheduledTime
+            Instant scheduledAt
     ) {}
 
     record ScheduleAppointmentOutput(
             String appointmentId,
             String customerId,
             String serviceId,
-            LocalDateTime startsAt,
-            LocalDateTime endsAt,
+            Instant startsAt,
+            Instant endsAt,
             AppointmentStatus appointmentStatus
     ) {}
 

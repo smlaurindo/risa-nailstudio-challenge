@@ -16,7 +16,11 @@ public class ScheduleAppointmentUseCase implements ScheduleAppointment {
     private final ServiceRepository serviceRepository;
     private final AppointmentRepository appointmentRepository;
 
-    public ScheduleAppointmentUseCase(CustomerRepository customerRepository, ServiceRepository serviceRepository, AppointmentRepository appointmentRepository) {
+    public ScheduleAppointmentUseCase(
+            CustomerRepository customerRepository,
+            ServiceRepository serviceRepository,
+            AppointmentRepository appointmentRepository
+    ) {
         this.customerRepository = customerRepository;
         this.serviceRepository = serviceRepository;
         this.appointmentRepository = appointmentRepository;
@@ -40,13 +44,12 @@ public class ScheduleAppointmentUseCase implements ScheduleAppointment {
                 .orElseThrow(() -> new NotFoundException(ErrorCode.SERVICE_NOT_FOUND));
 
         var slot = AppointmentSlot.from(
-                input.scheduledTime(),
-                input.scheduledDate(),
+                input.scheduledAt(),
                 service.getDurationMinutes()
         );
 
         if (!appointmentRepository.isSlotAvailable(slot)) {
-            throw new ConflictException(ErrorCode.APPOINTMENT_SLOT_UNAVAILABLE, "scheduledTime");
+            throw new ConflictException(ErrorCode.APPOINTMENT_SLOT_UNAVAILABLE, "scheduledAt");
         }
 
         var appointment = Appointment.schedule(

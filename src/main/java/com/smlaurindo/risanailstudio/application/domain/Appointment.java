@@ -9,10 +9,10 @@ import java.util.UUID;
 import static java.time.Instant.now;
 
 public class Appointment {
-    private String id;
-    private String customerId;
-    private String serviceId;
-    private AppointmentSlot slot;
+    private final String id;
+    private final String customerId;
+    private final String serviceId;
+    private final AppointmentSlot slot;
     private AppointmentStatus status;
     private Instant confirmedAt;
     private Instant cancelledAt;
@@ -58,6 +58,10 @@ public class Appointment {
     public void confirm() {
         if (status != AppointmentStatus.PENDING) {
             throw new BusinessRuleException(ErrorCode.APPOINTMENT_ALREADY_CONFIRMED);
+        }
+
+        if (slot.isInThePast()) {
+            throw new BusinessRuleException(ErrorCode.APPOINTMENT_IN_THE_PAST);
         }
 
         this.status = AppointmentStatus.CONFIRMED;

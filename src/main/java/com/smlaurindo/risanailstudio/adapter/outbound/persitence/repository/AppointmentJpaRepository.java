@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Repository
 public interface AppointmentJpaRepository extends JpaRepository<AppointmentJpaEntity, String> {
@@ -18,7 +18,7 @@ public interface AppointmentJpaRepository extends JpaRepository<AppointmentJpaEn
         AND a.status <> 'CANCELLED'
     """)
     boolean existsConflict(
-            @Param("startsAt") LocalDateTime startsAt,
-            @Param("endsAt") LocalDateTime endsAt
+            @Param("startsAt") Instant startsAt,
+            @Param("endsAt") Instant endsAt
     );
 }
