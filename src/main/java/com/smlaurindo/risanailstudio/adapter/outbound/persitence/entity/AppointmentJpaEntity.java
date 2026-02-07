@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 public class AppointmentJpaEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id", nullable = false, unique = true)
     private String id;
 
     @ManyToOne(fetch = FetchType.LAZY)

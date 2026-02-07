@@ -1,6 +1,7 @@
 package com.smlaurindo.risanailstudio.application.domain;
 
 import java.time.*;
+import java.util.UUID;
 
 import static java.time.Instant.now;
 
@@ -15,6 +16,7 @@ public class Appointment {
     private final Instant createdAt;
 
     private Appointment(String customerId, String serviceId, AppointmentSlot slot) {
+        this.id = UUID.randomUUID().toString();
         this.customerId = customerId;
         this.serviceId = serviceId;
         this.slot = slot;

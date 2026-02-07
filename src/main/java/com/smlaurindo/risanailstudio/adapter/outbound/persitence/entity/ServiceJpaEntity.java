@@ -14,7 +14,7 @@ import lombok.*;
 public class ServiceJpaEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id", nullable = false, unique = true)
     private String id;
 
     @Column(name = "name", nullable = false)

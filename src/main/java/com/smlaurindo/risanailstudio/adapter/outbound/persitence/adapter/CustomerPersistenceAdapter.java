@@ -3,7 +3,6 @@ package com.smlaurindo.risanailstudio.adapter.outbound.persitence.adapter;
 import com.smlaurindo.risanailstudio.adapter.outbound.persitence.entity.CustomerJpaEntity;
 import com.smlaurindo.risanailstudio.adapter.outbound.persitence.entity.UserJpaEntity;
 import com.smlaurindo.risanailstudio.adapter.outbound.persitence.repository.CustomerJpaRepository;
-import com.smlaurindo.risanailstudio.adapter.outbound.persitence.repository.UserJpaRepository;
 import com.smlaurindo.risanailstudio.application.domain.Customer;
 import com.smlaurindo.risanailstudio.port.outbound.persistence.CustomerRepository;
 import lombok.RequiredArgsConstructor;
