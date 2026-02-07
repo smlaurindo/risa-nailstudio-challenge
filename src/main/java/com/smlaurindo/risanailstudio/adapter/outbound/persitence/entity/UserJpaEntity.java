@@ -31,6 +31,10 @@ public class UserJpaEntity {
     @Column(name = "is_admin", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
     private boolean isAdmin;
 
+    public UserJpaEntity(String id) {
+        this.id = id;
+    }
+
     public static UserJpaEntity fromDomain(Customer customer) {
         return new UserJpaEntity(
                 customer.getId(),

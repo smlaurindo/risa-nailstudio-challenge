@@ -29,6 +29,10 @@ public class ServiceJpaEntity {
     @Column(name = "icon", nullable = false)
     private String icon;
 
+    public ServiceJpaEntity(String id) {
+        this.id = id;
+    }
+
     public Service toDomain() {
         return new Service(id, name, durationMinutes, priceCents, icon);
     }

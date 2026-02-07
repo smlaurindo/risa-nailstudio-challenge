@@ -1,10 +1,8 @@
 package com.smlaurindo.risanailstudio.shared.config;
 
-import com.smlaurindo.risanailstudio.application.usecase.GetAvailableServices;
-import com.smlaurindo.risanailstudio.application.usecase.GetAvailableServicesUseCase;
+import com.smlaurindo.risanailstudio.application.usecase.*;
 
-import com.smlaurindo.risanailstudio.application.usecase.SignUp;
-import com.smlaurindo.risanailstudio.application.usecase.SignUpUseCase;
+import com.smlaurindo.risanailstudio.port.outbound.persistence.AppointmentRepository;
 import com.smlaurindo.risanailstudio.port.outbound.persistence.CustomerRepository;
 import com.smlaurindo.risanailstudio.port.outbound.persistence.ServiceRepository;
 import com.smlaurindo.risanailstudio.port.outbound.security.PasswordHasher;
@@ -29,4 +27,16 @@ public class AppConfig {
         return new SignUpUseCase(customerRepository, passwordHasher);
     }
 
+    @Bean
+    public ScheduleAppointment scheduleAppointmentUseCase(
+            CustomerRepository customerRepository,
+            ServiceRepository serviceRepository,
+            AppointmentRepository appointmentRepository
+    ) {
+        return new ScheduleAppointmentUseCase(
+                customerRepository,
+                serviceRepository,
+                appointmentRepository
+        );
+    }
 }
