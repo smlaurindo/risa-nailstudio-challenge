@@ -6,6 +6,10 @@ public class BusinessRuleException extends ApiException {
         super(ErrorType.BUSINESS_RULE, code, field);
     }
 
+    public BusinessRuleException(ErrorCode code) {
+        super(ErrorType.BUSINESS_RULE, code);
+    }
+
     @Override
     public int getHttpStatus() {
         return 422;

@@ -39,8 +39,8 @@ public class AppointmentJpaEntity {
     @Enumerated(EnumType.STRING)
     private AppointmentStatus status;
 
-    @Column(name = "accepted_at")
-    private Instant acceptedAt;
+    @Column(name = "confirmed_at")
+    private Instant confirmedAt;
 
     @Column(name = "cancelled_at")
     private Instant cancelledAt;
@@ -56,7 +56,7 @@ public class AppointmentJpaEntity {
                 appointment.getSlot().startsAt(),
                 appointment.getSlot().endsAt(),
                 appointment.getStatus(),
-                appointment.getAcceptedAt(),
+                appointment.getConfirmedAt(),
                 appointment.getCancelledAt(),
                 appointment.getCreatedAt()
         );
@@ -69,7 +69,7 @@ public class AppointmentJpaEntity {
                 service.getId(),
                 new AppointmentSlot(startsAt, endsAt),
                 status,
-                acceptedAt,
+                confirmedAt,
                 cancelledAt,
                 createdAt
         );

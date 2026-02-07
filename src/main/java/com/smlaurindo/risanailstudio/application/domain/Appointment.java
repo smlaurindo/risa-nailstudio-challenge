@@ -1,5 +1,8 @@
 package com.smlaurindo.risanailstudio.application.domain;
 
+import com.smlaurindo.risanailstudio.shared.exception.BusinessRuleException;
+import com.smlaurindo.risanailstudio.shared.exception.ErrorCode;
+
 import java.time.*;
 import java.util.UUID;
 
@@ -11,7 +14,7 @@ public class Appointment {
     private String serviceId;
     private AppointmentSlot slot;
     private AppointmentStatus status;
-    private Instant acceptedAt;
+    private Instant confirmedAt;
     private Instant cancelledAt;
     private final Instant createdAt;
 
@@ -30,7 +33,7 @@ public class Appointment {
             String serviceId,
             AppointmentSlot slot,
             AppointmentStatus status,
-            Instant acceptedAt,
+            Instant confirmedAt,
             Instant cancelledAt,
             Instant createdAt
     ) {
@@ -39,7 +42,7 @@ public class Appointment {
         this.serviceId = serviceId;
         this.slot = slot;
         this.status = status;
-        this.acceptedAt = acceptedAt;
+        this.confirmedAt = confirmedAt;
         this.cancelledAt = cancelledAt;
         this.createdAt = createdAt;
     }
@@ -52,27 +55,14 @@ public class Appointment {
         return new Appointment(customerId, serviceId, slot);
     }
 
-//    public void accept() {
-//        if (status != AppointmentStatus.PENDING) {
-//            throw new DomainException(
-//                    "Only pending appointments can be accepted"
-//            );
-//        }
-//
-//        this.status = AppointmentStatus.ACCEPTED;
-//        this.acceptedAt = now();
-//    }
-//
-//    public void cancel() {
-//        if (status == AppointmentStatus.CANCELLED) {
-//            throw new DomainException(
-//                    "Appointment is already cancelled"
-//            );
-//        }
-//
-//        this.status = AppointmentStatus.CANCELLED;
-//        this.cancelledAt = now();
-//    }
+    public void confirm() {
+        if (status != AppointmentStatus.PENDING) {
+            throw new BusinessRuleException(ErrorCode.APPOINTMENT_ALREADY_CONFIRMED);
+        }
+
+        this.status = AppointmentStatus.CONFIRMED;
+        this.confirmedAt = now();
+    }
 
     public String getId() {
         return id;
@@ -94,8 +84,8 @@ public class Appointment {
         return status;
     }
 
-    public Instant getAcceptedAt() {
-        return acceptedAt;
+    public Instant getConfirmedAt() {
+        return confirmedAt;
     }
 
     public Instant getCancelledAt() {

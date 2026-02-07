@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -36,5 +38,13 @@ public class AppointmentPersistenceAdapter implements AppointmentRepository {
                 slot.startsAt(),
                 slot.endsAt()
         );
+    }
+
+    @Override
+    public Optional<Appointment> findById(final String id) {
+        log.debug("Finding appointment by id: {}", id);
+
+        return appointmentJpaRepository.findById(id)
+                .map(AppointmentJpaEntity::toDomain);
     }
 }
