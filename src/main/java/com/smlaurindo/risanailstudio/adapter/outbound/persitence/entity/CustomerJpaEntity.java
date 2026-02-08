@@ -12,7 +12,7 @@ import lombok.*;
 @Builder
 public class CustomerJpaEntity {
     @Id
-    @Column(name = "id", nullable = false, unique = true)
+    @Column(name = "id")
     private String id;
 
     @OneToOne(optional = false, fetch = FetchType.LAZY)

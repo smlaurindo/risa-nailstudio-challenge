@@ -14,11 +14,11 @@ import java.time.Instant;
 @Builder
 public class RefreshTokenJpaEntity {
     @Id
-    @Column(name = "id", nullable = false, unique = true)
+    @Column(name = "id")
     private String id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "subject", nullable = false)
     private UserJpaEntity subject;
 
     @Column(name = "token", nullable = false, unique = true, updatable = false)

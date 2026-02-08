@@ -13,7 +13,7 @@ import lombok.*;
 @Builder
 public class UserJpaEntity {
     @Id
-    @Column(name = "id", nullable = false, unique = true)
+    @Column(name = "id")
     private String id;
 
     @Column(name = "email", nullable = false, unique = true)

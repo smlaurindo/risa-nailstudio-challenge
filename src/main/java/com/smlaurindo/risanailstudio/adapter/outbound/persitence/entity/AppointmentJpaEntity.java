@@ -3,7 +3,6 @@ package com.smlaurindo.risanailstudio.adapter.outbound.persitence.entity;
 import com.smlaurindo.risanailstudio.application.domain.Appointment;
 import com.smlaurindo.risanailstudio.application.domain.AppointmentSlot;
 import com.smlaurindo.risanailstudio.application.domain.AppointmentStatus;
-import com.smlaurindo.risanailstudio.application.domain.Customer;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,13 +18,15 @@ import java.time.Instant;
 public class AppointmentJpaEntity {
 
     @Id
-    @Column(name = "id", nullable = false, unique = true)
+    @Column(name = "id")
     private String id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "customer_id", nullable = false)
     private CustomerJpaEntity customer;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "service_id", nullable = false)
     private ServiceJpaEntity service;
 
     @Column(name = "starts_at", nullable = false)
