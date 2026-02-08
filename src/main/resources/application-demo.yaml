@@ -31,7 +31,7 @@ spring:
   jpa:
     show-sql: false
     hibernate:
-      ddl-auto: validate
+      ddl-auto: none
     properties:
       hibernate:
         format_sql: false
@@ -57,7 +57,6 @@ management:
       base-path: /actuator
   endpoint:
     health:
-      show-details: when-authorized
       probes:
         enabled: true
   health:

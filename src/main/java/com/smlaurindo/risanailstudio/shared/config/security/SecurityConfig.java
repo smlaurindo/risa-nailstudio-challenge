@@ -92,6 +92,7 @@ public class SecurityConfig {
                                 .requestMatchers("/swagger-ui/**").permitAll()
                                 .requestMatchers("/api-docs/**").permitAll()
                                 .requestMatchers("/scalar/**").permitAll()
+                                .requestMatchers("/actuator/**").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .csrf(AbstractHttpConfigurer::disable)
