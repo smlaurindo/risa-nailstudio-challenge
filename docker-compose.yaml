@@ -3,26 +3,114 @@ version: "3.9"
 services:
   postgres:
     image: postgres:18-alpine
-    container_name: risa-dev-postgres
+    container_name: risa-demo-postgres
     restart: unless-stopped
     environment:
-      - POSTGRES_DB=risa_dev_db
-      - POSTGRES_USER=risa_dev_user
-      - POSTGRES_PASSWORD=risa_dev_password
+      - POSTGRES_DB=${POSTGRES_DB:-risa_demo_db}
+      - POSTGRES_USER=${POSTGRES_USER:-risa_demo_user}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-risa_demo_password}
     ports:
-      - "5433:5432"
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -h localhost -p 5432 -d risa_dev_db -U risa_dev_user"]
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -h localhost -p 5432 -d ${POSTGRES_DB:-risa_demo_db} -U ${POSTGRES_USER:-risa_demo_user}",
+        ]
       interval: 10s
       timeout: 5s
       retries: 5
+      start_period: 10s
+    networks:
+      - risa-network
 
-  adminer:
-    image: adminer
-    container_name: risa-dev-adminer
+  risa-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: risa-demo-api
     restart: unless-stopped
     ports:
-      - "8088:8080"
+      - "${API_PORT:-8080}:8080"
+    environment:
+      # Spring Profile
+      - SPRING_PROFILES_ACTIVE=demo
+
+      # Database Configuration
+      - DATABASE_URL=jdbc:postgresql://postgres:5432/${POSTGRES_DB:-risa_db}
+      - DATABASE_USERNAME=${POSTGRES_USER:-risa_demo_user}
+      - DATABASE_PASSWORD=${POSTGRES_PASSWORD:-risa_demo_password}
+      - DB_POOL_SIZE=${DB_POOL_SIZE:-10}
+      - DB_POOL_MIN_IDLE=${DB_POOL_MIN_IDLE:-5}
+
+      # JWT
+      - JWT_PUBLIC_KEY=${JWT_PUBLIC_KEY}
+      - JWT_PRIVATE_KEY=${JWT_PRIVATE_KEY}
+      - JWT_ACCESS_TOKEN_EXPIRATION=${JWT_ACCESS_TOKEN_EXPIRATION:-900000}
+      - JWT_REFRESH_TOKEN_EXPIRATION=${JWT_REFRESH_TOKEN_EXPIRATION:-604800000}
+
+      # Security
+      - SECURITY_PASSWORD_SALT=${SECURITY_PASSWORD_SALT:-16}
+
+      # CORS Configuration
+      - CORS_ALLOWED_ORIGINS=${CORS_ALLOWED_ORIGINS:-http://localhost:3000}
+      - CORS_ALLOWED_METHODS=${CORS_ALLOWED_METHODS:-GET,POST,PUT,DELETE,OPTIONS,PATCH}
+
+      # Cookie Configuration
+      - COOKIE_DOMAIN=${COOKIE_DOMAIN:-}
+      - COOKIE_SECURE=${COOKIE_SECURE:-false}
+      - COOKIE_SAME_SITE=${COOKIE_SAME_SITE:-Lax}
+
+      # Server Configuration
+      - PORT=8080
+
+      # JVM Options
+      - JAVA_OPTS=-Xmx512m -Xms256m
+    volumes:
+      - api_logs:/app/logs
     depends_on:
       postgres:
         condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://localhost:8080/actuator/health",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - risa-network
+
+  adminer:
+    image: adminer
+    container_name: risa-adminer
+    restart: unless-stopped
+    ports:
+      - "${ADMINER_PORT:-8088}:8080"
+    environment:
+      - ADMINER_DEFAULT_SERVER=postgres
+      - ADMINER_DESIGN=nette
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - risa-network
+
+volumes:
+  postgres_data:
+    driver: local
+  api_logs:
+    driver: local
+
+networks:
+  risa-network:
+    driver: bridge

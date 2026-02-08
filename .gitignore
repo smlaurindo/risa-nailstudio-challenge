@@ -35,3 +35,33 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Environment & Secrets ###
+.env
+.env.local
+.env.production
+.env.development
+keys/
+private_key.pem
+public_key.pem
+*.pem
+
+### Logs ###
+logs/
+*.log
+*.log.*
+
+### OS ###
+.DS_Store
+Thumbs.db
+*.tmp
+*.swp
+*.swo
+*~
+
+### Docker ###
+docker-compose.override.yml
+
+### Application ###
+application-local.yaml
+application-local.yml

@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class RisaNailStudioApiApplication {
-	void main(String[] args) {
+	public static void main(String[] args) {
 		SpringApplication.run(RisaNailStudioApiApplication.class, args);
 	}
 }
