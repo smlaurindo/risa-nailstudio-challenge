@@ -3,8 +3,8 @@ package com.smlaurindo.risanailstudio.shared.config;
 import com.smlaurindo.risanailstudio.application.usecase.*;
 
 import com.smlaurindo.risanailstudio.port.outbound.persistence.*;
-import com.smlaurindo.risanailstudio.port.outbound.security.PasswordHasher;
-import com.smlaurindo.risanailstudio.port.outbound.security.TokenGenerator;
+import com.smlaurindo.risanailstudio.port.outbound.security.PasswordHasherPort;
+import com.smlaurindo.risanailstudio.port.outbound.security.TokenGeneratorPort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,100 +13,100 @@ public class AppConfig {
 
     @Bean
     public GetAvailableServices getAvailableServicesUseCase(
-            ServiceRepository serviceRepository
+            ServiceRepositoryPort serviceRepositoryPort
     ) {
-        return new GetAvailableServicesUseCase(serviceRepository);
+        return new GetAvailableServicesUseCase(serviceRepositoryPort);
     }
 
     @Bean
     public GetService getServiceUseCase(
-            ServiceRepository serviceRepository
+            ServiceRepositoryPort serviceRepositoryPort
     ) {
-        return new GetServiceUseCase(serviceRepository);
+        return new GetServiceUseCase(serviceRepositoryPort);
     }
 
     @Bean
     public CreateService createServiceUseCase(
-            AdminRepository adminRepository,
-            ServiceRepository serviceRepository
+            AdminRepositoryPort adminRepositoryPort,
+            ServiceRepositoryPort serviceRepositoryPort
     ) {
-        return new CreateServiceUseCase(adminRepository, serviceRepository);
+        return new CreateServiceUseCase(adminRepositoryPort, serviceRepositoryPort);
     }
 
     @Bean
     public SignUp signUpUseCase(
-            CredentialsRepository credentialsRepository,
-            CustomerRepository customerRepository,
-            PasswordHasher passwordHasher
+            CredentialsRepositoryPort credentialsRepositoryPort,
+            CustomerRepositoryPort customerRepositoryPort,
+            PasswordHasherPort passwordHasherPort
     ) {
-        return new SignUpUseCase(credentialsRepository, customerRepository, passwordHasher);
+        return new SignUpUseCase(credentialsRepositoryPort, customerRepositoryPort, passwordHasherPort);
     }
 
     @Bean
     public SignIn signInUseCase(
-            TokenGenerator tokenGenerator,
-            CredentialsRepository credentialsRepository,
-            PasswordHasher passwordHasher
+            TokenGeneratorPort tokenGeneratorPort,
+            CredentialsRepositoryPort credentialsRepositoryPort,
+            PasswordHasherPort passwordHasherPort
     ) {
-        return new SignInUseCase(tokenGenerator, credentialsRepository, passwordHasher);
+        return new SignInUseCase(tokenGeneratorPort, credentialsRepositoryPort, passwordHasherPort);
     }
 
     @Bean
-    public SignOut signOutUseCase(RefreshTokenRepository refreshTokenRepository) {
-        return new SignOutUseCase(refreshTokenRepository);
+    public SignOut signOutUseCase(RefreshTokenRepositoryPort refreshTokenRepositoryPort) {
+        return new SignOutUseCase(refreshTokenRepositoryPort);
     }
 
     @Bean
     public RefreshAccessToken refreshAccessTokenUseCase(
-            RefreshTokenRepository refreshTokenRepository,
-            CredentialsRepository credentialsRepository,
-            TokenGenerator tokenGenerator
+            RefreshTokenRepositoryPort refreshTokenRepositoryPort,
+            CredentialsRepositoryPort credentialsRepositoryPort,
+            TokenGeneratorPort tokenGeneratorPort
     ) {
-        return new RefreshAccessTokenUseCase(refreshTokenRepository, credentialsRepository, tokenGenerator);
+        return new RefreshAccessTokenUseCase(refreshTokenRepositoryPort, credentialsRepositoryPort, tokenGeneratorPort);
     }
 
     @Bean
     public ScheduleAppointment scheduleAppointmentUseCase(
-            CustomerRepository customerRepository,
-            ServiceRepository serviceRepository,
-            AppointmentRepository appointmentRepository
+            CustomerRepositoryPort customerRepositoryPort,
+            ServiceRepositoryPort serviceRepositoryPort,
+            AppointmentRepositoryPort appointmentRepositoryPort
     ) {
         return new ScheduleAppointmentUseCase(
-                customerRepository,
-                serviceRepository,
-                appointmentRepository
+                customerRepositoryPort,
+                serviceRepositoryPort,
+                appointmentRepositoryPort
         );
     }
 
     @Bean
     public ConfirmAppointment confirmAppointmentUseCase(
-            AdminRepository adminRepository,
-            AppointmentRepository appointmentRepository
+            AdminRepositoryPort adminRepositoryPort,
+            AppointmentRepositoryPort appointmentRepositoryPort
     ) {
-        return new ConfirmAppointmentUseCase(adminRepository, appointmentRepository);
+        return new ConfirmAppointmentUseCase(adminRepositoryPort, appointmentRepositoryPort);
     }
 
     @Bean
     public CancelAppointment cancelAppointmentUseCase(
-            AdminRepository adminRepository,
-            AppointmentRepository appointmentRepository
+            AdminRepositoryPort adminRepositoryPort,
+            AppointmentRepositoryPort appointmentRepositoryPort
     ) {
-        return new CancelAppointmentUseCase(adminRepository, appointmentRepository);
+        return new CancelAppointmentUseCase(adminRepositoryPort, appointmentRepositoryPort);
     }
 
     @Bean
     public ListAppointments listAppointmentsUseCase(
-            AdminRepository adminRepository,
-            AppointmentRepository appointmentRepository
+            AdminRepositoryPort adminRepositoryPort,
+            AppointmentRepositoryPort appointmentRepositoryPort
     ) {
-        return new ListAppointmentsUseCase(adminRepository, appointmentRepository);
+        return new ListAppointmentsUseCase(adminRepositoryPort, appointmentRepositoryPort);
     }
 
     @Bean
     public GetAppointment getAppointmentUseCase(
-            AdminRepository adminRepository,
-            AppointmentRepository appointmentRepository
+            AdminRepositoryPort adminRepositoryPort,
+            AppointmentRepositoryPort appointmentRepositoryPort
     ) {
-        return new GetAppointmentUseCase(adminRepository, appointmentRepository);
+        return new GetAppointmentUseCase(adminRepositoryPort, appointmentRepositoryPort);
     }
 }

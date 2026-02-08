@@ -3,25 +3,25 @@ package com.smlaurindo.risanailstudio.application.usecase;
 import com.smlaurindo.risanailstudio.application.exception.AuthorizationException;
 import com.smlaurindo.risanailstudio.application.exception.ErrorCode;
 import com.smlaurindo.risanailstudio.application.exception.NotFoundException;
-import com.smlaurindo.risanailstudio.port.outbound.persistence.AdminRepository;
-import com.smlaurindo.risanailstudio.port.outbound.persistence.AppointmentRepository;
+import com.smlaurindo.risanailstudio.port.outbound.persistence.AdminRepositoryPort;
+import com.smlaurindo.risanailstudio.port.outbound.persistence.AppointmentRepositoryPort;
 
 public class GetAppointmentUseCase implements GetAppointment {
 
-    private final AdminRepository adminRepository;
-    private final AppointmentRepository appointmentRepository;
+    private final AdminRepositoryPort adminRepositoryPort;
+    private final AppointmentRepositoryPort appointmentRepositoryPort;
 
-    public GetAppointmentUseCase(AdminRepository adminRepository, AppointmentRepository appointmentRepository) {
-        this.adminRepository = adminRepository;
-        this.appointmentRepository = appointmentRepository;
+    public GetAppointmentUseCase(AdminRepositoryPort adminRepositoryPort, AppointmentRepositoryPort appointmentRepositoryPort) {
+        this.adminRepositoryPort = adminRepositoryPort;
+        this.appointmentRepositoryPort = appointmentRepositoryPort;
     }
 
     @Override
     public GetAppointmentOutput getAppointment(GetAppointmentInput input) {
-        adminRepository.findByCredentialsId(input.credentialsId())
+        adminRepositoryPort.findByCredentialsId(input.credentialsId())
                 .orElseThrow(() -> new AuthorizationException(ErrorCode.INSUFFICIENT_PRIVILEGES));
 
-        var appointment = appointmentRepository.findDetailById(input.appointmentId())
+        var appointment = appointmentRepositoryPort.findDetailById(input.appointmentId())
                 .orElseThrow(() -> new NotFoundException(ErrorCode.APPOINTMENT_NOT_FOUND));
 
         return new GetAppointmentOutput(

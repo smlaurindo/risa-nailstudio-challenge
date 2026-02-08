@@ -4,7 +4,7 @@ import com.smlaurindo.risanailstudio.application.domain.Admin;
 
 import java.util.Optional;
 
-public interface AdminRepository {
+public interface AdminRepositoryPort {
     Admin save(Admin admin);
     Optional<Admin> findByCredentialsId(String credentialsId);
 }

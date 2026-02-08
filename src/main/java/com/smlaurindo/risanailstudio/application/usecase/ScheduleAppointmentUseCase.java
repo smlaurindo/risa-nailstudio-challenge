@@ -2,9 +2,9 @@ package com.smlaurindo.risanailstudio.application.usecase;
 
 import com.smlaurindo.risanailstudio.application.domain.Appointment;
 import com.smlaurindo.risanailstudio.application.domain.AppointmentSlot;
-import com.smlaurindo.risanailstudio.port.outbound.persistence.AppointmentRepository;
-import com.smlaurindo.risanailstudio.port.outbound.persistence.CustomerRepository;
-import com.smlaurindo.risanailstudio.port.outbound.persistence.ServiceRepository;
+import com.smlaurindo.risanailstudio.port.outbound.persistence.AppointmentRepositoryPort;
+import com.smlaurindo.risanailstudio.port.outbound.persistence.CustomerRepositoryPort;
+import com.smlaurindo.risanailstudio.port.outbound.persistence.ServiceRepositoryPort;
 import com.smlaurindo.risanailstudio.application.exception.BusinessRuleException;
 import com.smlaurindo.risanailstudio.application.exception.ConflictException;
 import com.smlaurindo.risanailstudio.application.exception.ErrorCode;
@@ -12,23 +12,23 @@ import com.smlaurindo.risanailstudio.application.exception.NotFoundException;
 
 public class ScheduleAppointmentUseCase implements ScheduleAppointment {
 
-    private final CustomerRepository customerRepository;
-    private final ServiceRepository serviceRepository;
-    private final AppointmentRepository appointmentRepository;
+    private final CustomerRepositoryPort customerRepositoryPort;
+    private final ServiceRepositoryPort serviceRepositoryPort;
+    private final AppointmentRepositoryPort appointmentRepositoryPort;
 
     public ScheduleAppointmentUseCase(
-            CustomerRepository customerRepository,
-            ServiceRepository serviceRepository,
-            AppointmentRepository appointmentRepository
+            CustomerRepositoryPort customerRepositoryPort,
+            ServiceRepositoryPort serviceRepositoryPort,
+            AppointmentRepositoryPort appointmentRepositoryPort
     ) {
-        this.customerRepository = customerRepository;
-        this.serviceRepository = serviceRepository;
-        this.appointmentRepository = appointmentRepository;
+        this.customerRepositoryPort = customerRepositoryPort;
+        this.serviceRepositoryPort = serviceRepositoryPort;
+        this.appointmentRepositoryPort = appointmentRepositoryPort;
     }
 
     @Override
     public ScheduleAppointmentOutput scheduleAppointment(ScheduleAppointmentInput input) {
-        var customer = customerRepository.findByCredentialsId(input.credentialsId())
+        var customer = customerRepositoryPort.findByCredentialsId(input.credentialsId())
                 .orElseThrow(() -> new NotFoundException(ErrorCode.CUSTOMER_NOT_FOUND));
 
         if (customer.getName() == null && input.customerName() == null) {
@@ -37,10 +37,10 @@ public class ScheduleAppointmentUseCase implements ScheduleAppointment {
 
         if (customer.getName() == null && input.customerName() != null) {
             customer.setName(input.customerName());
-            customerRepository.save(customer);
+            customerRepositoryPort.save(customer);
         }
 
-        var service = serviceRepository.findById(input.serviceId())
+        var service = serviceRepositoryPort.findById(input.serviceId())
                 .orElseThrow(() -> new NotFoundException(ErrorCode.SERVICE_NOT_FOUND));
 
         var slot = AppointmentSlot.from(
@@ -48,7 +48,7 @@ public class ScheduleAppointmentUseCase implements ScheduleAppointment {
                 service.getDurationMinutes()
         );
 
-        if (!appointmentRepository.isSlotAvailable(slot)) {
+        if (!appointmentRepositoryPort.isSlotAvailable(slot)) {
             throw new ConflictException(ErrorCode.APPOINTMENT_SLOT_UNAVAILABLE, "scheduledAt");
         }
 
@@ -58,7 +58,7 @@ public class ScheduleAppointmentUseCase implements ScheduleAppointment {
                 slot
         );
 
-        appointmentRepository.save(appointment);
+        appointmentRepositoryPort.save(appointment);
 
         return new ScheduleAppointmentOutput(
                 appointment.getId(),

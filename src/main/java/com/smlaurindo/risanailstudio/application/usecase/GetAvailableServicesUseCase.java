@@ -1,19 +1,19 @@
 package com.smlaurindo.risanailstudio.application.usecase;
 
-import com.smlaurindo.risanailstudio.port.outbound.persistence.ServiceRepository;
+import com.smlaurindo.risanailstudio.port.outbound.persistence.ServiceRepositoryPort;
 
 import java.util.List;
 
 public class GetAvailableServicesUseCase implements GetAvailableServices {
 
-    private final ServiceRepository serviceRepository;
+    private final ServiceRepositoryPort serviceRepositoryPort;
 
-    public GetAvailableServicesUseCase(ServiceRepository serviceRepository) {
-        this.serviceRepository = serviceRepository;
+    public GetAvailableServicesUseCase(ServiceRepositoryPort serviceRepositoryPort) {
+        this.serviceRepositoryPort = serviceRepositoryPort;
     }
 
     public List<GetAvailableServicesOutput> getAvailableServices() {
-        final var availableServices = serviceRepository.findAllAvailableServices();
+        final var availableServices = serviceRepositoryPort.findAllAvailableServices();
 
         return availableServices.stream()
                 .map(availableService -> new GetAvailableServicesOutput(

@@ -1,8 +1,8 @@
 package com.smlaurindo.risanailstudio.application.usecase;
 
-import com.smlaurindo.risanailstudio.port.outbound.persistence.CredentialsRepository;
-import com.smlaurindo.risanailstudio.port.outbound.persistence.RefreshTokenRepository;
-import com.smlaurindo.risanailstudio.port.outbound.security.TokenGenerator;
+import com.smlaurindo.risanailstudio.port.outbound.persistence.CredentialsRepositoryPort;
+import com.smlaurindo.risanailstudio.port.outbound.persistence.RefreshTokenRepositoryPort;
+import com.smlaurindo.risanailstudio.port.outbound.security.TokenGeneratorPort;
 import com.smlaurindo.risanailstudio.application.exception.AuthenticationException;
 import com.smlaurindo.risanailstudio.application.exception.ErrorCode;
 
@@ -10,23 +10,23 @@ import java.time.Instant;
 
 public class RefreshAccessTokenUseCase implements RefreshAccessToken {
 
-    private final RefreshTokenRepository refreshTokenRepository;
-    private final CredentialsRepository credentialsRepository;
-    private final TokenGenerator tokenGenerator;
+    private final RefreshTokenRepositoryPort refreshTokenRepositoryPort;
+    private final CredentialsRepositoryPort credentialsRepositoryPort;
+    private final TokenGeneratorPort tokenGeneratorPort;
 
     public RefreshAccessTokenUseCase(
-            RefreshTokenRepository refreshTokenRepository,
-            CredentialsRepository credentialsRepository,
-            TokenGenerator tokenGenerator
+            RefreshTokenRepositoryPort refreshTokenRepositoryPort,
+            CredentialsRepositoryPort credentialsRepositoryPort,
+            TokenGeneratorPort tokenGeneratorPort
     ) {
-        this.refreshTokenRepository = refreshTokenRepository;
-        this.credentialsRepository = credentialsRepository;
-        this.tokenGenerator = tokenGenerator;
+        this.refreshTokenRepositoryPort = refreshTokenRepositoryPort;
+        this.credentialsRepositoryPort = credentialsRepositoryPort;
+        this.tokenGeneratorPort = tokenGeneratorPort;
     }
 
     @Override
     public RefreshAccessTokenOutput refreshAccessToken(RefreshAccessTokenInput input) {
-        var refreshToken = refreshTokenRepository.findByToken(input.refreshToken())
+        var refreshToken = refreshTokenRepositoryPort.findByToken(input.refreshToken())
                 .orElseThrow(() -> new AuthenticationException(ErrorCode.INVALID_TOKEN));
 
         if (refreshToken.isRevoked()) {
@@ -37,10 +37,10 @@ public class RefreshAccessTokenUseCase implements RefreshAccessToken {
             throw new AuthenticationException(ErrorCode.EXPIRED_TOKEN);
         }
 
-        var credentials = credentialsRepository.findById(refreshToken.getSubject())
+        var credentials = credentialsRepositoryPort.findById(refreshToken.getSubject())
                 .orElseThrow(() -> new AuthenticationException(ErrorCode.INVALID_CREDENTIALS));
 
-        var accessToken = tokenGenerator.generateAccessToken(credentials.getId(), credentials.getRole());
+        var accessToken = tokenGeneratorPort.generateAccessToken(credentials.getId(), credentials.getRole());
 
         return new RefreshAccessTokenOutput(accessToken);
     }

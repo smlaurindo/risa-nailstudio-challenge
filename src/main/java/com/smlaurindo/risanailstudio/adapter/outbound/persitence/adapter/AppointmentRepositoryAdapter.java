@@ -5,7 +5,7 @@ import com.smlaurindo.risanailstudio.adapter.outbound.persitence.repository.Appo
 import com.smlaurindo.risanailstudio.application.domain.Appointment;
 import com.smlaurindo.risanailstudio.application.domain.AppointmentSlot;
 import com.smlaurindo.risanailstudio.application.domain.AppointmentStatus;
-import com.smlaurindo.risanailstudio.port.outbound.persistence.AppointmentRepository;
+import com.smlaurindo.risanailstudio.port.outbound.persistence.AppointmentRepositoryPort;
 
 import com.smlaurindo.risanailstudio.port.outbound.persistence.projection.AppointmentDetailProjection;
 import com.smlaurindo.risanailstudio.port.outbound.persistence.projection.AppointmentToListProjection;
@@ -21,7 +21,7 @@ import java.util.Optional;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class AppointmentPersistenceAdapter implements AppointmentRepository {
+public class AppointmentRepositoryAdapter implements AppointmentRepositoryPort {
 
     private final AppointmentJpaRepository appointmentJpaRepository;
 

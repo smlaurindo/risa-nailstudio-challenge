@@ -5,7 +5,7 @@ import com.smlaurindo.risanailstudio.application.domain.Role;
 import java.time.Instant;
 import java.util.List;
 
-public interface TokenGenerator {
+public interface TokenGeneratorPort {
     record AccessToken(
         String token,
         String subject,

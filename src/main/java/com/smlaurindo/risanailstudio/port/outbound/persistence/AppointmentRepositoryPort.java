@@ -10,7 +10,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
-public interface AppointmentRepository {
+public interface AppointmentRepositoryPort {
     Appointment save(Appointment appointment);
     boolean isSlotAvailable(AppointmentSlot slot);
     Optional<Appointment> findById(String id);

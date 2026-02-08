@@ -1,32 +1,32 @@
 package com.smlaurindo.risanailstudio.application.usecase;
 
-import com.smlaurindo.risanailstudio.port.outbound.persistence.AdminRepository;
-import com.smlaurindo.risanailstudio.port.outbound.persistence.AppointmentRepository;
+import com.smlaurindo.risanailstudio.port.outbound.persistence.AdminRepositoryPort;
+import com.smlaurindo.risanailstudio.port.outbound.persistence.AppointmentRepositoryPort;
 import com.smlaurindo.risanailstudio.application.exception.AuthorizationException;
 import com.smlaurindo.risanailstudio.application.exception.ErrorCode;
 import com.smlaurindo.risanailstudio.application.exception.NotFoundException;
 
 public class CancelAppointmentUseCase implements CancelAppointment {
 
-    private final AdminRepository adminRepository;
-    private final AppointmentRepository appointmentRepository;
+    private final AdminRepositoryPort adminRepositoryPort;
+    private final AppointmentRepositoryPort appointmentRepositoryPort;
 
-    public CancelAppointmentUseCase(AdminRepository adminRepository, AppointmentRepository appointmentRepository) {
-        this.adminRepository = adminRepository;
-        this.appointmentRepository = appointmentRepository;
+    public CancelAppointmentUseCase(AdminRepositoryPort adminRepositoryPort, AppointmentRepositoryPort appointmentRepositoryPort) {
+        this.adminRepositoryPort = adminRepositoryPort;
+        this.appointmentRepositoryPort = appointmentRepositoryPort;
     }
 
     @Override
     public CancelAppointmentOutput cancelAppointment(CancelAppointmentInput input) {
-        adminRepository.findByCredentialsId(input.credentialsId())
+        adminRepositoryPort.findByCredentialsId(input.credentialsId())
                 .orElseThrow(() -> new AuthorizationException(ErrorCode.INSUFFICIENT_PRIVILEGES));
 
-        var appointment = appointmentRepository.findById(input.appointmentId())
+        var appointment = appointmentRepositoryPort.findById(input.appointmentId())
                 .orElseThrow(() -> new NotFoundException(ErrorCode.APPOINTMENT_NOT_FOUND));
 
         appointment.cancel();
 
-        appointmentRepository.save(appointment);
+        appointmentRepositoryPort.save(appointment);
 
         return new CancelAppointmentOutput(
                 appointment.getId(),

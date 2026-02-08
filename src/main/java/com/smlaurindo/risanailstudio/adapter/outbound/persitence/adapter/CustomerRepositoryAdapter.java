@@ -4,7 +4,7 @@ import com.smlaurindo.risanailstudio.adapter.outbound.persitence.entity.Customer
 import com.smlaurindo.risanailstudio.adapter.outbound.persitence.entity.UserJpaEntity;
 import com.smlaurindo.risanailstudio.adapter.outbound.persitence.repository.CustomerJpaRepository;
 import com.smlaurindo.risanailstudio.application.domain.Customer;
-import com.smlaurindo.risanailstudio.port.outbound.persistence.CustomerRepository;
+import com.smlaurindo.risanailstudio.port.outbound.persistence.CustomerRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -14,7 +14,7 @@ import java.util.Optional;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class CustomerPersistenceAdapter implements CustomerRepository {
+public class CustomerRepositoryAdapter implements CustomerRepositoryPort {
 
     private final CustomerJpaRepository customerJpaRepository;
 

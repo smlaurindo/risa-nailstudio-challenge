@@ -1,6 +1,6 @@
 package com.smlaurindo.risanailstudio.application.usecase;
 
-import com.smlaurindo.risanailstudio.port.outbound.security.TokenGenerator;
+import com.smlaurindo.risanailstudio.port.outbound.security.TokenGeneratorPort;
 
 public interface SignIn {
     record SignInInput(
@@ -9,8 +9,8 @@ public interface SignIn {
     ) {}
 
     record SignInOutput(
-            TokenGenerator.AccessToken accessToken,
-            TokenGenerator.RefreshToken refreshToken
+            TokenGeneratorPort.AccessToken accessToken,
+            TokenGeneratorPort.RefreshToken refreshToken
     ) {}
 
     SignInOutput signIn(SignInInput input);

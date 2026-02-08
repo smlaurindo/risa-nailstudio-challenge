@@ -1,6 +1,6 @@
 package com.smlaurindo.risanailstudio.application.usecase;
 
-import com.smlaurindo.risanailstudio.port.outbound.security.TokenGenerator;
+import com.smlaurindo.risanailstudio.port.outbound.security.TokenGeneratorPort;
 
 public interface RefreshAccessToken {
     record RefreshAccessTokenInput(
@@ -8,7 +8,7 @@ public interface RefreshAccessToken {
     ) {}
 
     record RefreshAccessTokenOutput(
-            TokenGenerator.AccessToken accessToken
+            TokenGeneratorPort.AccessToken accessToken
     ) {}
 
     RefreshAccessTokenOutput refreshAccessToken(RefreshAccessTokenInput input);

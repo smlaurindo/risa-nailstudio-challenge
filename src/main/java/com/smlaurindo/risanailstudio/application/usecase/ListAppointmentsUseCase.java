@@ -1,7 +1,7 @@
 package com.smlaurindo.risanailstudio.application.usecase;
 
-import com.smlaurindo.risanailstudio.port.outbound.persistence.AdminRepository;
-import com.smlaurindo.risanailstudio.port.outbound.persistence.AppointmentRepository;
+import com.smlaurindo.risanailstudio.port.outbound.persistence.AdminRepositoryPort;
+import com.smlaurindo.risanailstudio.port.outbound.persistence.AppointmentRepositoryPort;
 import com.smlaurindo.risanailstudio.application.exception.AuthorizationException;
 import com.smlaurindo.risanailstudio.application.exception.BusinessRuleException;
 import com.smlaurindo.risanailstudio.application.exception.ErrorCode;
@@ -12,17 +12,17 @@ import java.util.List;
 
 public class ListAppointmentsUseCase implements ListAppointments {
 
-    private final AdminRepository adminRepository;
-    private final AppointmentRepository appointmentRepository;
+    private final AdminRepositoryPort adminRepositoryPort;
+    private final AppointmentRepositoryPort appointmentRepositoryPort;
 
-    public ListAppointmentsUseCase(AdminRepository adminRepository, AppointmentRepository appointmentRepository) {
-        this.adminRepository = adminRepository;
-        this.appointmentRepository = appointmentRepository;
+    public ListAppointmentsUseCase(AdminRepositoryPort adminRepositoryPort, AppointmentRepositoryPort appointmentRepositoryPort) {
+        this.adminRepositoryPort = adminRepositoryPort;
+        this.appointmentRepositoryPort = appointmentRepositoryPort;
     }
 
     @Override
     public List<ListAppointmentsOutput> listAppointments(ListAppointmentsInput input) {
-        adminRepository.findByCredentialsId(input.credentialsId())
+        adminRepositoryPort.findByCredentialsId(input.credentialsId())
                 .orElseThrow(() -> new AuthorizationException(ErrorCode.INSUFFICIENT_PRIVILEGES));
 
         if (input.startDate().isAfter(input.endDate())) {
@@ -35,7 +35,7 @@ public class ListAppointmentsUseCase implements ListAppointments {
             throw new BusinessRuleException(ErrorCode.DATE_RANGE_TOO_LONG);
         }
 
-        var appointments = appointmentRepository.findAppointments(
+        var appointments = appointmentRepositoryPort.findAppointments(
                 input.startDate().atStartOfDay(ZoneOffset.UTC).toInstant(),
                 input.endDate().plusDays(1).atStartOfDay(ZoneOffset.UTC).toInstant(),
                 input.status(),

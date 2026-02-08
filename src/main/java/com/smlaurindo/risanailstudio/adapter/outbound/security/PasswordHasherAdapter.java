@@ -1,13 +1,13 @@
 package com.smlaurindo.risanailstudio.adapter.outbound.security;
 
-import com.smlaurindo.risanailstudio.port.outbound.security.PasswordHasher;
+import com.smlaurindo.risanailstudio.port.outbound.security.PasswordHasherPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class PasswordHasherAdapter implements PasswordHasher {
+public class PasswordHasherAdapter implements PasswordHasherPort {
 
     private final PasswordEncoder passwordEncoder;
 

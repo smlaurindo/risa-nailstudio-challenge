@@ -1,32 +1,32 @@
 package com.smlaurindo.risanailstudio.application.usecase;
 
-import com.smlaurindo.risanailstudio.port.outbound.persistence.AdminRepository;
-import com.smlaurindo.risanailstudio.port.outbound.persistence.AppointmentRepository;
+import com.smlaurindo.risanailstudio.port.outbound.persistence.AdminRepositoryPort;
+import com.smlaurindo.risanailstudio.port.outbound.persistence.AppointmentRepositoryPort;
 import com.smlaurindo.risanailstudio.application.exception.AuthorizationException;
 import com.smlaurindo.risanailstudio.application.exception.ErrorCode;
 import com.smlaurindo.risanailstudio.application.exception.NotFoundException;
 
 public class ConfirmAppointmentUseCase implements ConfirmAppointment {
 
-    private final AdminRepository adminRepository;
-    private final AppointmentRepository appointmentRepository;
+    private final AdminRepositoryPort adminRepositoryPort;
+    private final AppointmentRepositoryPort appointmentRepositoryPort;
 
-    public ConfirmAppointmentUseCase(AdminRepository adminRepository, AppointmentRepository appointmentRepository) {
-        this.adminRepository = adminRepository;
-        this.appointmentRepository = appointmentRepository;
+    public ConfirmAppointmentUseCase(AdminRepositoryPort adminRepositoryPort, AppointmentRepositoryPort appointmentRepositoryPort) {
+        this.adminRepositoryPort = adminRepositoryPort;
+        this.appointmentRepositoryPort = appointmentRepositoryPort;
     }
 
     @Override
     public ConfirmAppointmentOutput confirmAppointment(ConfirmAppointmentInput input) {
-        adminRepository.findByCredentialsId(input.credentialsId())
+        adminRepositoryPort.findByCredentialsId(input.credentialsId())
                 .orElseThrow(() -> new AuthorizationException(ErrorCode.INSUFFICIENT_PRIVILEGES));
 
-        var appointment = appointmentRepository.findById(input.appointmentId())
+        var appointment = appointmentRepositoryPort.findById(input.appointmentId())
                 .orElseThrow(() -> new NotFoundException(ErrorCode.APPOINTMENT_NOT_FOUND));
 
         appointment.confirm();
 
-        appointmentRepository.save(appointment);
+        appointmentRepositoryPort.save(appointment);
 
         return new ConfirmAppointmentOutput(
                 appointment.getId(),

@@ -1,8 +1,8 @@
 package com.smlaurindo.risanailstudio.adapter.outbound.security;
 
 import com.smlaurindo.risanailstudio.application.domain.Role;
-import com.smlaurindo.risanailstudio.port.outbound.persistence.RefreshTokenRepository;
-import com.smlaurindo.risanailstudio.port.outbound.security.TokenGenerator;
+import com.smlaurindo.risanailstudio.port.outbound.persistence.RefreshTokenRepositoryPort;
+import com.smlaurindo.risanailstudio.port.outbound.security.TokenGeneratorPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
@@ -17,10 +17,10 @@ import static java.time.Instant.now;
 
 @Component
 @RequiredArgsConstructor
-public class TokenGeneratorAdapter implements TokenGenerator {
+public class TokenGeneratorAdapter implements TokenGeneratorPort {
 
     private final JwtEncoder jwtEncoder;
-    private final RefreshTokenRepository refreshTokenRepository;
+    private final RefreshTokenRepositoryPort refreshTokenRepositoryPort;
 
     @Value("${app.jwt.access-token-expiration}")
     private long accessTokenExpiration;
@@ -52,7 +52,7 @@ public class TokenGeneratorAdapter implements TokenGenerator {
     }
 
     @Override
-    public TokenGenerator.RefreshToken generateRefreshToken(String subject) {
+    public TokenGeneratorPort.RefreshToken generateRefreshToken(String subject) {
         var now = Instant.now();
         var expiresAt = now.plusMillis(refreshTokenExpiration);
 
@@ -62,9 +62,9 @@ public class TokenGeneratorAdapter implements TokenGenerator {
                 expiresAt
         );
 
-        refreshTokenRepository.save(refreshToken);
+        refreshTokenRepositoryPort.save(refreshToken);
 
-        return new TokenGenerator.RefreshToken(
+        return new TokenGeneratorPort.RefreshToken(
                 refreshToken.getToken(),
                 refreshToken.getSubject(),
                 refreshToken.getIssuedAt(),

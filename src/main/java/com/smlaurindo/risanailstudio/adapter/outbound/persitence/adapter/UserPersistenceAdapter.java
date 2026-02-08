@@ -3,7 +3,7 @@ package com.smlaurindo.risanailstudio.adapter.outbound.persitence.adapter;
 import com.smlaurindo.risanailstudio.adapter.outbound.persitence.entity.UserJpaEntity;
 import com.smlaurindo.risanailstudio.adapter.outbound.persitence.repository.UserJpaRepository;
 import com.smlaurindo.risanailstudio.application.domain.Credentials;
-import com.smlaurindo.risanailstudio.port.outbound.persistence.CredentialsRepository;
+import com.smlaurindo.risanailstudio.port.outbound.persistence.CredentialsRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -13,7 +13,7 @@ import java.util.Optional;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class UserPersistenceAdapter implements CredentialsRepository {
+public class UserPersistenceAdapter implements CredentialsRepositoryPort {
 
     private final UserJpaRepository userJpaRepository;
 

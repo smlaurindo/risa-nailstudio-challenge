@@ -4,7 +4,7 @@ import com.smlaurindo.risanailstudio.adapter.outbound.persitence.entity.AdminJpa
 import com.smlaurindo.risanailstudio.adapter.outbound.persitence.entity.UserJpaEntity;
 import com.smlaurindo.risanailstudio.adapter.outbound.persitence.repository.AdminJpaRepository;
 import com.smlaurindo.risanailstudio.application.domain.Admin;
-import com.smlaurindo.risanailstudio.port.outbound.persistence.AdminRepository;
+import com.smlaurindo.risanailstudio.port.outbound.persistence.AdminRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -14,7 +14,7 @@ import java.util.Optional;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class AdminPersistenceAdapter implements AdminRepository {
+public class AdminRepositoryAdapter implements AdminRepositoryPort {
 
     private final AdminJpaRepository adminJpaRepository;
 

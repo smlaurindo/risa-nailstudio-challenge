@@ -3,7 +3,7 @@ package com.smlaurindo.risanailstudio.adapter.outbound.persitence.adapter;
 import com.smlaurindo.risanailstudio.adapter.outbound.persitence.entity.ServiceJpaEntity;
 import com.smlaurindo.risanailstudio.adapter.outbound.persitence.repository.ServiceJpaRepository;
 import com.smlaurindo.risanailstudio.application.domain.Service;
-import com.smlaurindo.risanailstudio.port.outbound.persistence.ServiceRepository;
+import com.smlaurindo.risanailstudio.port.outbound.persistence.ServiceRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class ServicePersistenceAdapter implements ServiceRepository {
+public class ServiceRepositoryAdapter implements ServiceRepositoryPort {
 
     private final ServiceJpaRepository serviceJpaRepository;
 
